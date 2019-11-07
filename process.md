@@ -1,13 +1,18 @@
 # Arrow Dynamics
 
 ## Basic Info ##
+Project Name: Energy Wars
 
-The project title, your names, e-mail addresses, UIDs, a link to the project repository.
-Energy Wars
+Team Members:
+Daniel Marsden
+A02256379
+marsden.daniel@gmail.com
+
 Spencer Griffin
 A01653454
 xcgriffs@gmail.com
 
+Git Repo:
 https://github.com/gitdaddy/CS5890_arrow_dynamics_vis
 
 ## Background and Motivation ##
