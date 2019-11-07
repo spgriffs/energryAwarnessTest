@@ -3,7 +3,7 @@
 ## Basic Info ##
 Project Name: Energy Wars
 
-Team Members:
+# Team Members:
 Daniel Marsden
 A02256379
 marsden.daniel@gmail.com
