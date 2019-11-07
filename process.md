@@ -35,5 +35,11 @@ Do you expect to do substantial data cleanup? What quantities do you plan to der
 * Must-Have Features. List the features without which you would consider your project to be a failure.
 * Optional Features. List the features which you consider to be nice to have, but not critical.
 
+### Notes From Tuesdays Meeting
+ * Create a simple game out of the data (match the signal to the electronic)
+ * Animated Heat map - showing the usage over time
+ * Bubble chart like the one with the companies and their profits - transition to show separate groups
+ * Scaled line chart showing the data in a time-series fashion
+
 ## Project Schedule ##
 Make sure that you plan your work so that you can avoid a big rush right before the final project deadline, and delegate different modules and responsibilities among your team members. Write this in terms of weekly deadlines.
