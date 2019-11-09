@@ -68,15 +68,13 @@ The Tracebase dataset is stored in a number of CSV files. The size of each file 
 * Create one final design that incorporates the best of your three designs.
 * Describe your designs and justify your choices of visual encodings.
 * We recommend you use the Five Design Sheet Methodology (Links to an external site.).
-* Must-Have Features. List the features without which you would consider your project to be a failure.
-* Optional Features. List the features which you consider to be nice to have, but not critical.
 
 ## Must Have Features ##
 
 * A way for the user to compare different appliances side by side.
 * A way for the user to select which appliances to compare.
 * A way for the user to see trends over time.
-* A way fot the user to see total energy usage when using selected appliances.
+* A way for the user to see total energy usage when using selected appliances.
 
 ## Optional Features ##
 * An interactive game to guess which appliance usage is shown
