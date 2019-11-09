@@ -20,7 +20,7 @@ https://github.com/gitdaddy/CS5890_arrow_dynamics_vis
 ## Background and Motivation ##
 Discuss your motivations and reasons for choosing this project, especially any background or research interests that may have influenced your decision.
 
-When the Tacebase dataset was discovered, we pictured the usefulness it could mean to someone how wants to understand their power consumption. Understanding power trends in your home environment can help lead to more efficient living and reduce spending. Most if not all of us have to pay for power expenses. Being able to quickly analyze real world data can help provide critical insight into our own consumption footprint.
+When the Tacebase dataset was discovered, we pictured the usefulness it could mean for people who want to better understand their power consumption. Understanding power trends in your home environment can help lead to more efficient living and reduce spending. Most if not all of us have to pay for power expenses. Being able to quickly analyze real world data can help provide critical insight into our own consumption footprint.
 
 ----
 
@@ -45,6 +45,8 @@ Data. From where and how are you collecting your data? If appropriate, provide a
 
 ## Data Processing ##
 Do you expect to do substantial data cleanup? What quantities do you plan to derive from your data? How will data processing be implemented?
+
+The Tracebase dataset is stored in a number of CSV files. The size of each file can be up 5-10 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computaionality with a large number of files. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps or the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially will be processing will be stored on disk in the project workspace. 
 
 ----
 
