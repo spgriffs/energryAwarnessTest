@@ -40,13 +40,25 @@ Data. From where and how are you collecting your data? If appropriate, provide a
 
 3.Engaging and Interactive to the user
 
+### Benifits
+1. Allow the user to identify appliance upgrades that would have the most benifit
+
+2. Reduced energy costs and consumption
+
+3. Allow user to optimize appliance usage and regonize potential issues.
+
 ----
+
+## Data ##
+We got our data from a github repository called tracebase.
+
+Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
 
 ## Data Processing ##
 Do you expect to do substantial data cleanup? What quantities do you plan to derive from your data? How will data processing be implemented?
 
-The Tracebase dataset is stored in a number of CSV files. The size of each file can be up 5-10 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computaionality with a large number of files. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps or the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially will be processing will be stored on disk in the project workspace. 
+The Tracebase dataset is stored in a number of CSV files. The size of each file can be up 5-10 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computaionality with a large number of files. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps for the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially be processing will be stored on disk in the project workspace. 
 
 ----
 
@@ -59,6 +71,17 @@ The Tracebase dataset is stored in a number of CSV files. The size of each file 
 * Must-Have Features. List the features without which you would consider your project to be a failure.
 * Optional Features. List the features which you consider to be nice to have, but not critical.
 
+## Must Have Features ##
+
+* A way for the user to compare different appliances side by side.
+* A way for the user to select which appliances to compare.
+* A way for the user to see trends over time.
+* A way fot the user to see total energy usage when using selected appliances.
+
+## Optional Features ##
+* An interactive game to guess which appliance usage is shown
+* Beautiful animations and transitions.
+
 ### Notes From Tuesdays Meeting
  * Create a simple game out of the data (match the signal to the electronic)
  * Animated Heat map - showing the usage over time
@@ -69,3 +92,7 @@ The Tracebase dataset is stored in a number of CSV files. The size of each file 
 
 ## Project Schedule ##
 Make sure that you plan your work so that you can avoid a big rush right before the final project deadline, and delegate different modules and responsibilities among your team members. Write this in terms of weekly deadlines.
+
+### Week 1:
+### Week 2:
+### Week 3:
