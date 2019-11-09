@@ -94,5 +94,12 @@ The Tracebase dataset is stored in a number of CSV files. The size of each file 
 Make sure that you plan your work so that you can avoid a big rush right before the final project deadline, and delegate different modules and responsibilities among your team members. Write this in terms of weekly deadlines.
 
 ### Week 1:
+* Read in data
+* Select which data to view
+* General layout of page
 ### Week 2:
+* Calendar/week view
+* Aggregate area chart. Show accumulated power usage for a single day
 ### Week 3:
+* Bubble chart
+* Comparison vis. can be built off of same basic form as aggregate area chart.
