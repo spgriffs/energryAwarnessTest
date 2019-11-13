@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -61,7 +61,14 @@
 
         #main {
             transition: margin-left .5s;
-            padding: 0px;
+            position: fixed;
+            padding-bottom: 30px;
+        }
+
+        #content {
+            transition: margin-left .5s;
+            position: fixed;
+            padding-top: 50px;
         }
 
         /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -94,6 +101,7 @@
             color: white;
         }
     </style>
+    <title>Energy Awareness</title>
 </head>
 <body>
 
@@ -124,20 +132,30 @@
     </label>
 </div>
 
+<div id="content">
+    <div id="vis1">
+        <h2>Vis 1</h2>
+        <p>Add different vis here, need to be inside the content div</p>
+    </div>
+
+</div>
+
+<!--This must be below all content as the button is not clickable otherwise-->
 <div id="main">
     <button class="openbtn" onclick="openNav()">Data Selection</button>
 </div>
-
 <script>
     function openNav() {
         document.getElementById("mySidebar").style.width = "250px";
         document.getElementById("main").style.marginLeft = "250px";
         document.getElementById("main").style.visibility = "hidden";
+        document.getElementById("content").style.marginLeft = "250px";
     }
 
     function closeNav() {
         document.getElementById("mySidebar").style.width = "0";
         document.getElementById("main").style.marginLeft= "0";
+        document.getElementById("content").style.marginLeft = "0";
         document.getElementById("main").style.visibility = "visible";
     }
 </script>
