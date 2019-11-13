@@ -1,164 +1,55 @@
 <!DOCTYPE html>
-<html lang="">
+<html>
+
 <head>
+    <link rel="shortcut icon" href="">
+    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: "Lato", sans-serif;
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 50px;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-
-        .sidebar a, label{
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 25px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .sidebar, a, label:hover {
-            color: #f1f1f1;
-            cursor: pointer;
-        }
-
-        .sidebar .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-        }
-
-        .openbtn {
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #111;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-        }
-
-        .openbtn:hover {
-            background-color: #444;
-        }
-        .closebtn:hover {
-            color: #f1f1f1;
-            cursor: pointer;
-        }
-
-        #main {
-            transition: margin-left .5s;
-            position: fixed;
-            padding-bottom: 30px;
-        }
-
-        #content {
-            transition: margin-left .5s;
-            position: fixed;
-            padding-top: 50px;
-        }
-
-        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-        @media screen and (max-height: 450px) {
-            .sidebar {padding-top: 15px;}
-            .sidebar a {font-size: 18px;}
-        }
-
-        .topnav {
-            overflow: hidden;
-            background-color: #333;
-        }
-
-        .topnav a {
-            float: left;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-        }
-
-        .topnav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        .topnav a.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <script type="text/javascript" src="./public/readData.js"></script>
+    <script type="text/javascript" src="./public/pageLayout.js"></script>
     <title>Energy Awareness</title>
 </head>
+
 <body>
-
-<div class="topnav">
-    <a class="active" href="#home">Top</a>
-    <a href="#1">Vis 1</a>
-    <a href="#2">Vis 2</a>
-    <a href="#3">Vis 3</a>
-</div>
-
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">Close</a>
-    <label>
-        Toaster
-        <input type="checkbox" value="toaster">
-    </label>
-    <label>
-        Refrigerator
-        <input type="checkbox" value="refrigerator">
-    </label>
-    <label>
-        Alarm clock
-        <input type="checkbox" value="alarm_clock">
-    </label>
-    <label>
-        PS4
-        <input type="checkbox" value="ps4">
-    </label>
-</div>
-
-<div id="content">
-    <div id="vis1">
-        <h2>Vis 1</h2>
-        <p>Add different vis here, need to be inside the content div</p>
+    <div class="topnav">
+        <a class="active" href="#home">Top</a>
+        <a href="#1">Vis 1</a>
+        <a href="#2">Vis 2</a>
+        <a href="#3">Vis 3</a>
     </div>
 
-</div>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">Close</a>
+        <label>
+            Toaster
+            <input type="checkbox" value="toaster">
+        </label>
+        <label>
+            Refrigerator
+            <input type="checkbox" value="refrigerator">
+        </label>
+        <label>
+            Alarm clock
+            <input type="checkbox" value="alarm_clock">
+        </label>
+        <label>
+            PS4
+            <input type="checkbox" value="ps4">
+        </label>
+    </div>
 
-<!--This must be below all content as the button is not clickable otherwise-->
-<div id="main">
-    <button class="openbtn" onclick="openNav()">Data Selection</button>
-</div>
-<script>
-    function openNav() {
-        document.getElementById("mySidebar").style.width = "250px";
-        document.getElementById("main").style.marginLeft = "250px";
-        document.getElementById("main").style.visibility = "hidden";
-        document.getElementById("content").style.marginLeft = "250px";
-    }
+    <div id="content">
+        <div id="vis1">
+            <h2>Vis 1</h2>
+            <p>Add different vis here, need to be inside the content div</p>
+        </div>
 
-    function closeNav() {
-        document.getElementById("mySidebar").style.width = "0";
-        document.getElementById("main").style.marginLeft= "0";
-        document.getElementById("content").style.marginLeft = "0";
-        document.getElementById("main").style.visibility = "visible";
-    }
-</script>
+    </div>
 
+    <!--This must be below all content as the button is not clickable otherwise-->
+    <div id="main">
+        <button class="openbtn" onclick="openNav()">Data Selection</button>
+    </div>
 </body>
+
 </html>
