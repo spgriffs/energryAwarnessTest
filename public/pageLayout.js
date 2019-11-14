@@ -51,7 +51,7 @@ function pageInit() {
   itemSelection.enter()
     .append("label")
     .html(d => {
-      return `<p> <input type="checkbox" value="${d.dir}" onclick="onItemChecked(this)" /> ${d.label} </p>`;
+      return `<input type="checkbox" value="${d.dir}" onclick="onItemChecked(this)" /> ${d.label}`;
     })
     ;
 }
