@@ -20,12 +20,7 @@
 </head>
 
 <body onload="pageInit()">
-    <div class="topnav">
-        <a class="active" href="#home">Top</a>
-        <a href="#1">Vis 1</a>
-        <a href="#2">Vis 2</a>
-        <a href="#3">Vis 3</a>
-    </div>
+
 
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">Close</a>
@@ -49,16 +44,27 @@
     </div>
 
     <div id="content">
-        <div id="vis1">
-            <h2>Vis 1</h2>
-            <p>Add different vis here, need to be inside the content div</p>
-        </div>
+        <div id="calendar">
+            <h2>Calendar Overview</h2>
+            <p>Does increasing this drastically change where the header is located?</p>
+            <svg viewBox="0 0 100 100">
+                <g>
 
+                </g>
+            </svg>
+        </div>
     </div>
 
     <!--This must be below all content as the button is not clickable otherwise-->
     <div id="main">
         <button class="openbtn" onclick="openNav()">Data Selection</button>
+    </div>
+
+    <div class="topnav">
+        <a class="active" href="#home">Top</a>
+        <a href="#1">Vis 1</a>
+        <a href="#2">Vis 2</a>
+        <a href="#3">Vis 3</a>
     </div>
 </body>
 

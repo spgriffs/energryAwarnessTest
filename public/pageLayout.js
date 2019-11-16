@@ -46,6 +46,15 @@ let itemList = [
   { label: "Xmas Lights", dir: "XmasLights" }
 ];
 
+let days = [
+    {name: "Sunday", value: "100"},
+    {name: "Monday", value: "100"},
+    {name: "Tuesday", value: "100"},
+    {name: "Wednesday", value: "100"},
+    {name: "Thursday", value: "100"},
+    {name: "Friday", value: "100"},
+    {name: "Saturday", value: "100"}
+];
 function pageInit() {
   var itemSelection = d3.select("#mySidebar").selectAll("label").data(itemList);
   itemSelection.enter()
@@ -54,6 +63,17 @@ function pageInit() {
       return `<input type="checkbox" value="${d.dir}" onclick="onItemChecked(this)" /> ${d.label}`;
     })
     ;
+
+  let calandar = d3.select("#calendar").selectAll("svg").selectAll("g").selectAll("rect").data(days);
+
+  calandar.enter()
+      .append("rect")
+      .attr("width", "13%")
+      .attr("height", "25%")
+      .attr("x", function (d, i) {
+        return (13 * i) + "%";
+      })
+
 }
 
 function openNav() {
