@@ -64,15 +64,34 @@ function pageInit() {
     })
     ;
 
-  let calandar = d3.select("#calendar").selectAll("svg").selectAll("g").selectAll("rect").data(days);
+  let calandar = d3.select("#calendar").selectAll("svg").selectAll("g").selectAll("rect").data(days).enter().append("g");
 
-  calandar.enter()
+  let rec = calandar
       .append("rect")
       .attr("width", "13%")
       .attr("height", "25%")
       .attr("x", function (d, i) {
         return (13 * i) + "%";
       })
+      .style("fill", "#8D230F")
+      .on("mouseover", function () {
+        d3.select(this).style("fill", "#af6557");
+        d3.select(this).style("cursor", "pointer");
+      })
+      .on("mouseout", function () {
+        d3.select(this).style("fill", "#8D230F");
+        d3.select(this).style("cursor", "default");
+      })
+  ;
+  calandar.append("text").text(function (d) {
+          return d.name;
+      })
+      .attr("x", function (d, i) {
+        return (13 * i) + "%";
+      })
+      .attr("y","24px")
+  ;
+
 
 }
 
