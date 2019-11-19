@@ -1,49 +1,49 @@
 "using strict";
 
 let itemList = [
-  { label: "Alarmclock", dir: "Alarmclock" },
-  { label: "Amplifier", dir: "Amplifier" },
-  { label: "Bean To Cup Coffee Maker", dir: "BeanToCupCoffeemaker" },
-  { label: "Bread Cutter", dir: "Breadcutter" },
-  { label: "Cd Player", dir: "CdPlayer" },
-  { label: "Charger PSP", dir: "Charger-PSP" },
-  { label: "Charger Smartphone", dir: "Charger-Smartphone" },
-  { label: "Coffee Maker", dir: "Coffeemaker" },
-  { label: "Cooking Stove", dir: "Cookingstove" },
-  { label: "Digital Tv Receiver", dir: "DigitalTvReceiver" },
-  { label: "Dishwasher", dir: "Dishwasher" },
-  { label: "Dvd Player", dir: "DvdPlayer" },
-  { label: "Ethernet Switch", dir: "EthernetSwitch" },
-  { label: "Freezer", dir: "Freezer" },
-  { label: "Iron", dir: "Iron" },
-  { label: "Lamp", dir: "Lamp" },
-  { label: "Laundry Dryer", dir: "LaundryDryer" },
-  { label: "Microwave Oven", dir: "MicrowaveOven" },
-  { label: "Monitor CRT", dir: "Monitor-CRT" },
-  { label: "Monitor TFT", dir: "Monitor-TFT" },
-  { label: "Multi-media Center", dir: "Multimediacenter" },
-  { label: "PC Desktop", dir: "PC-Desktop" },
-  { label: "PC Laptop", dir: "PC-Laptop" },
-  { label: "Playstation3", dir: "Playstation3" },
-  { label: "Printer", dir: "Printer" },
-  { label: "Projector", dir: "Projector" },
-  { label: "Refrigerator", dir: "Refrigerator" },
-  { label: "Remote Desktop", dir: "RemoteDesktop" },
-  { label: "Router", dir: "Router" },
-  { label: "Solar Thermal System", dir: "SolarThermalSystem" },
-  { label: "Subwoofer", dir: "Subwoofer" },
-  { label: "Toaster", dir: "Toaster" },
-  { label: "TV CRT", dir: "TV-CRT" },
-  { label: "TV LCD", dir: "TV-LCD" },
-  { label: "USB Harddrive", dir: "USBHarddrive" },
-  { label: "USB Hub", dir: "USBHub" },
-  { label: "Vacuum Cleaner", dir: "VacuumCleaner" },
-  { label: "Video Projector", dir: "VideoProjector" },
-  { label: "Washing Machine", dir: "Washingmachine" },
-  { label: "Water Boiler", dir: "WaterBoiler" },
-  { label: "Water Fountain", dir: "WaterFountain" },
-  { label: "Water Kettle", dir: "WaterKettle" },
-  { label: "Xmas Lights", dir: "XmasLights" }
+  { label: "Alarmclock", dir: "Alarmclock", loadOnStart: true },
+  { label: "Amplifier", dir: "Amplifier", loadOnStart: false },
+  { label: "Bean To Cup Coffee Maker", dir: "BeanToCupCoffeemaker", loadOnStart: false },
+  { label: "Bread Cutter", dir: "Breadcutter", loadOnStart: false },
+  { label: "Cd Player", dir: "CdPlayer", loadOnStart: false },
+  { label: "Charger PSP", dir: "Charger-PSP", loadOnStart: false },
+  { label: "Charger Smartphone", dir: "Charger-Smartphone", loadOnStart: false },
+  { label: "Coffee Maker", dir: "Coffeemaker", loadOnStart: false },
+  { label: "Cooking Stove", dir: "Cookingstove", loadOnStart: false },
+  { label: "Digital Tv Receiver", dir: "DigitalTvReceiver", loadOnStart: false },
+  { label: "Dishwasher", dir: "Dishwasher", loadOnStart: false },
+  { label: "Dvd Player", dir: "DvdPlayer", loadOnStart: false },
+  { label: "Ethernet Switch", dir: "EthernetSwitch", loadOnStart: false },
+  { label: "Freezer", dir: "Freezer", loadOnStart: false },
+  { label: "Iron", dir: "Iron", loadOnStart: false },
+  { label: "Lamp", dir: "Lamp", loadOnStart: false },
+  { label: "Laundry Dryer", dir: "LaundryDryer", loadOnStart: false },
+  { label: "Microwave Oven", dir: "MicrowaveOven", loadOnStart: false },
+  { label: "Monitor CRT", dir: "Monitor-CRT", loadOnStart: false },
+  { label: "Monitor TFT", dir: "Monitor-TFT", loadOnStart: false },
+  { label: "Multi-media Center", dir: "Multimediacenter", loadOnStart: false },
+  { label: "PC Desktop", dir: "PC-Desktop", loadOnStart: false },
+  { label: "PC Laptop", dir: "PC-Laptop", loadOnStart: false },
+  { label: "Playstation3", dir: "Playstation3", loadOnStart: false },
+  { label: "Printer", dir: "Printer", loadOnStart: false },
+  { label: "Projector", dir: "Projector", loadOnStart: false },
+  { label: "Refrigerator", dir: "Refrigerator", loadOnStart: false },
+  { label: "Remote Desktop", dir: "RemoteDesktop", loadOnStart: false },
+  { label: "Router", dir: "Router", loadOnStart: false },
+  { label: "Solar Thermal System", dir: "SolarThermalSystem", loadOnStart: false },
+  { label: "Subwoofer", dir: "Subwoofer", loadOnStart: false },
+  { label: "Toaster", dir: "Toaster", loadOnStart: false },
+  { label: "TV CRT", dir: "TV-CRT", loadOnStart: false },
+  { label: "TV LCD", dir: "TV-LCD", loadOnStart: false },
+  { label: "USB Harddrive", dir: "USBHarddrive", loadOnStart: false },
+  { label: "USB Hub", dir: "USBHub", loadOnStart: false },
+  { label: "Vacuum Cleaner", dir: "VacuumCleaner", loadOnStart: false },
+  { label: "Video Projector", dir: "VideoProjector", loadOnStart: false },
+  { label: "Washing Machine", dir: "Washingmachine", loadOnStart: false },
+  { label: "Water Boiler", dir: "WaterBoiler", loadOnStart: false },
+  { label: "Water Fountain", dir: "WaterFountain", loadOnStart: false },
+  { label: "Water Kettle", dir: "WaterKettle", loadOnStart: false },
+  { label: "Xmas Lights", dir: "XmasLights", loadOnStart: false }
 ];
 
 let days = [
@@ -60,6 +60,11 @@ function pageInit() {
   itemSelection.enter()
     .append("label")
     .html(d => {
+      // load a number of sets initially
+      if (d.loadOnStart) {
+        onItemChecked({checked: true, value: d.dir, label: d.label});
+        return `<input type="checkbox" checked value="${d.dir}" onclick="onItemChecked(this)" /> ${d.label}`;
+      }
       return `<input type="checkbox" value="${d.dir}" onclick="onItemChecked(this)" /> ${d.label}`;
     })
     ;
@@ -92,7 +97,7 @@ function pageInit() {
       .attr("y","24px")
   ;
 
-
+  drawInit();
 }
 
 function openNav() {
