@@ -1,7 +1,7 @@
 "using strict";
 
 let itemList = [
-  //{ label: "Alarmclock", dir: "Alarmclock", loadOnStart: true },
+  { label: "Alarmclock", dir: "Alarmclock", loadOnStart: true },
   { label: "Amplifier", dir: "Amplifier", loadOnStart: false },
   { label: "Bean To Cup Coffee Maker", dir: "BeanToCupCoffeemaker", loadOnStart: false },
   { label: "Bread Cutter", dir: "Breadcutter", loadOnStart: false },
@@ -73,12 +73,25 @@ function pageInit() {
 
   let rec = calandar
       .append("rect")
-      .attr("width", "13%")
-      .attr("height", "25%")
+      .attr("width", "12.5%")
+      .attr("height", "85%")
       .attr("x", function (d, i) {
-        return (13 * i) + "%";
+        return (((13 * i) + .5) + "%");
+      })
+      .attr("day", function (d) {
+          return d.name;
       })
       .style("fill", "#8D230F")
+      .on("click", function () {
+          console.log(d3.select(this)["_groups"][0][0]["className"]["baseVal"]);
+          if(d3.select(this)["_groups"][0][0]["className"]["baseVal"] === "rectSelected"){
+              console.log("found class");
+              d3.select(this).attr("class", "");
+          }else{
+              console.log("no class");
+              d3.select(this).attr("class", "rectSelected");
+          }
+      })
       .on("mouseover", function () {
         d3.select(this).style("fill", "#af6557");
         d3.select(this).style("cursor", "pointer");
@@ -92,9 +105,9 @@ function pageInit() {
           return d.name;
       })
       .attr("x", function (d, i) {
-        return (13 * i) + "%";
+        return (((13 * i) + 2) + "%");
       })
-      .attr("y","24px")
+      .attr("y","19px")
   ;
 
   drawInit();

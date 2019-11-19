@@ -39,6 +39,11 @@ body {
   margin-left: 50px;
 }
 
+.rectSelected{
+  stroke-width: .5;
+  stroke: #5b2100;
+}
+
 .openbtn {
   font-size: 20px;
   cursor: pointer;
