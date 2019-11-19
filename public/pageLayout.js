@@ -9,12 +9,12 @@ let itemList = [
   { label: "Charger PSP", dir: "Charger-PSP", loadOnStart: false },
   { label: "Charger Smartphone", dir: "Charger-Smartphone", loadOnStart: false },
   { label: "Coffee Maker", dir: "Coffeemaker", loadOnStart: false },
-  { label: "Cooking Stove", dir: "Cookingstove", loadOnStart: true },
+  { label: "Cooking Stove", dir: "Cookingstove", loadOnStart: false },
   { label: "Digital Tv Receiver", dir: "DigitalTvReceiver", loadOnStart: false },
   { label: "Dishwasher", dir: "Dishwasher", loadOnStart: false },
   { label: "Dvd Player", dir: "DvdPlayer", loadOnStart: false },
   { label: "Ethernet Switch", dir: "EthernetSwitch", loadOnStart: false },
-  { label: "Freezer", dir: "Freezer", loadOnStart: true },
+  { label: "Freezer", dir: "Freezer", loadOnStart: false },
   { label: "Iron", dir: "Iron", loadOnStart: false },
   { label: "Lamp", dir: "Lamp", loadOnStart: false },
   { label: "Laundry Dryer", dir: "LaundryDryer", loadOnStart: false },
@@ -79,6 +79,7 @@ function pageInit() {
         return (13 * i) + "%";
       })
       ;
+  drawInit();
 }
 
 function openNav() {
