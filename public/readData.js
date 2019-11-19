@@ -13,6 +13,7 @@ function onItemChecked(item){
   } else {
     setAsUnselected(item.value, onDataUnselected);
   }
+  console.log("got here");
 }
 
 function readInDataItem(itemName, label, onNewDataCallback){

@@ -1,7 +1,7 @@
 "using strict";
 
 let itemList = [
-  { label: "Alarmclock", dir: "Alarmclock", loadOnStart: true },
+  //{ label: "Alarmclock", dir: "Alarmclock", loadOnStart: true },
   { label: "Amplifier", dir: "Amplifier", loadOnStart: false },
   { label: "Bean To Cup Coffee Maker", dir: "BeanToCupCoffeemaker", loadOnStart: false },
   { label: "Bread Cutter", dir: "Breadcutter", loadOnStart: false },
