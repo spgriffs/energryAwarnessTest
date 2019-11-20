@@ -3,7 +3,7 @@
 // format [{label: data: []}....]
 //$ python -m SimpleHTTPServer 8080
 
-// global dataset 
+// global dataset
 let g_dataset = {};
 
 function onItemChecked(item){
@@ -14,6 +14,29 @@ function onItemChecked(item){
     setAsUnselected(item.value, onDataUnselected);
   }
   console.log("got here");
+}
+
+function getStartAndEndDates() {
+  var keys = _.keys(g_dataset);
+  var startDate = new Date();
+  var endDate = new Date();
+  if (keys.length !== 0) {
+    startDate = g_dataset[keys[0]].startDate;
+    endDate = g_dataset[keys[0]].endDate;
+    _.each(_.keys(g_dataset), function(key) {
+      if (g_dataset[key].startDate < startDate && g_dataset[key].selected) {
+        startDate = g_dataset[key].startDate;
+      }
+      if (g_dataset[key].endDate > endDate && g_dataset[key].selected) {
+        endDate = g_dataset[key].endDate;
+      }
+    });
+  }
+
+  return {
+    start: startDate,
+    end: endDate,
+  };
 }
 
 function readInDataItem(itemName, label, onNewDataCallback){
@@ -33,11 +56,11 @@ function readInDataItem(itemName, label, onNewDataCallback){
             // console.log("file data ...");
             // Item Format: {itemName: {label, selected, days: []}}
             // Data format: {date, val, valAverage}
-  
+
             var dayData = _.map(fileData, function (row) {
               var str1 = row[_.keys(row)[0]].split(";");
               var dateStr = str1[0].split(" ");
-              // return {day: dateStr[0], time: dateStr[1], 
+              // return {day: dateStr[0], time: dateStr[1],
               //         val: parseInt(str1[1]), valAverage: parseInt(str1[2])};
               var dateArray = dateStr[0].split("/");
               var timeArray = dateStr[1].split(":");
@@ -49,31 +72,31 @@ function readInDataItem(itemName, label, onNewDataCallback){
                 parseInt(timeArray[1]),
                 parseInt(timeArray[2]));
               return {
-                date: date, 
+                date: date,
                 val: parseInt(str1[1]), valAverage: parseInt(str1[2])
               };
             });
-            
+
             if (g_dataset[itemName]) { // if the item is already defined
               g_dataset[itemName].days.push(dayData);
             } else {
               g_dataset[itemName] = {
                 startDate: dayData[0].date, // the data is ordered by time
-                label: label, 
-                selected: true, 
+                label: label,
+                selected: true,
                 days: []};
               g_dataset[itemName].days.push(dayData);
             }
             console.log(`read data: ${itemName} file ${fileCount} of ${found.length}`);
             if (fileCount === found.length) {
-              g_dataset[itemName].endDate = dayData[dayData.length - 1];
+              g_dataset[itemName].endDate = dayData[dayData.length - 1].date;
               onNewDataCallback(itemName);
             }
             fileCount++;
           });
         }
     }
-  }); 
+  });
 }
 
 function setAsUnselected(itemName, onUnselectedCallback) {

@@ -22,8 +22,9 @@ let yChartScale = d3.scaleLinear()
 
 // color palette
 var chartColorScale = d3.scaleOrdinal()
-.domain(_.map(itemList, "dir")) // all possible keys
+.domain(_.map(itemList, "dir"))
 .range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf'])
+;
 
 function drawInit() {
   chartSvg = d3.select('#areaChartSvg')
@@ -36,33 +37,44 @@ function drawInit() {
 
   xChartAxis = chartSvg.append('g')
   .attr("transform", `translate(${chartMargin.left}, ${chartHeight})`)
-  .call(d3.axisBottom(xChartScale)); 
+  .call(d3.axisBottom(xChartScale));
 
   yChartAxis = chartSvg.append('g')
   .attr("transform", `translate(${chartMargin.left},0)`)
   .call(d3.axisLeft(yChartScale));
 }
 
+function rescaleXAxis() {
+  var dateSpan = getStartAndEndDates();
+  xChartScale = d3.scaleTime()
+    .domain([dateSpan.start, dateSpan.end])
+    .nice(d3.timeWeek)
+    .range([0, chartWidth]);
+  xChartAxis.transition().duration(1000).call(d3.axisBottom(xChartScale));
+}
+
 function onDataUpdate(listName) {
   console.log(listName + " has new data has been loaded and is ready to draw");
-  
+  // rescale the chart to the new dates
+  rescaleXAxis();
   // Update area chart TODO
-  // var keys = _.keys(g_dataset);
+  var keys = _.keys(g_dataset);
   // var stackedData = d3.stack().keys(keys).data(_.values(g_dataset));
-  // chartSvg.selectAll("stackedLayer")
-  //   .data(stackedData)
-  //   .enter()
-  //   .append("path")
-  //   .style("fill", function (d) { return chartColorScale(d.key); })
-    // .attr("d", d3.area()
-    // .x(function(d, i) { return xChartScale(d.data.year); })
-    // .y0(function(d) { return yChartScale(d[0]); })
-    // .y1(function(d) { return yChartScale(d[1]); })
-  ;
-
+  // d3.select("#chartLayers").selectAll("path")
+  //   .data(_.values(g_dataset))
+  //   .join("path")
+  //     .attr("fill", ({key}) => chartColorScale(key))
+  //     .attr("d", area)
+  //   .append("title")
+  //     .text(({key}) => key);
+  // ;
 }
 
 function onDataUnselected(listName) {
   console.log(listName + " has been unselected");
   // TODO update the vis by removing all unselected data
+
+  // rescale the chart to the new dates
+  rescaleXAxis();
+
 }
