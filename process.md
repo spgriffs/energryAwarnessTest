@@ -50,6 +50,7 @@ Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
 The Tracebase dataset is stored in a number of CSV files. The size of each file can be up to 5-10 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computationally with a large number of files. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps for the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially be processing will be stored on disk in the project workspace.
 
+
 ----
 
 ## Visualization Design ##

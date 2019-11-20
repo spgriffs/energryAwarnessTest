@@ -1,5 +1,7 @@
 "using strict";
 
+// file for drawing d3 managed svgs
+
 // globals
 let chartMargin = {top: 50, right: 50, bottom: 50, left: 50},
     chartWidth = 1000 - chartMargin.left - chartMargin.right,
@@ -17,6 +19,11 @@ var xChartScale = d3.scaleTime()
 let yChartScale = d3.scaleLinear()
     .domain([0, 160])
     .range([chartHeight, 0]);
+
+// color palette
+var chartColorScale = d3.scaleOrdinal()
+.domain(_.map(itemList, "dir")) // all possible keys
+.range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf'])
 
 function drawInit() {
   chartSvg = d3.select('#areaChartSvg')
@@ -38,7 +45,21 @@ function drawInit() {
 
 function onDataUpdate(listName) {
   console.log(listName + " has new data has been loaded and is ready to draw");
-  // TODO update the vis by adding the new data
+  
+  // Update area chart TODO
+  // var keys = _.keys(g_dataset);
+  // var stackedData = d3.stack().keys(keys).data(_.values(g_dataset));
+  // chartSvg.selectAll("stackedLayer")
+  //   .data(stackedData)
+  //   .enter()
+  //   .append("path")
+  //   .style("fill", function (d) { return chartColorScale(d.key); })
+    // .attr("d", d3.area()
+    // .x(function(d, i) { return xChartScale(d.data.year); })
+    // .y0(function(d) { return yChartScale(d[0]); })
+    // .y1(function(d) { return yChartScale(d[1]); })
+  ;
+
 }
 
 function onDataUnselected(listName) {

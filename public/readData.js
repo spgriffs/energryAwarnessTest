@@ -17,6 +17,7 @@ function onItemChecked(item){
 }
 
 function readInDataItem(itemName, label, onNewDataCallback){
+  if (g_dataset[itemName]) return;
   $.ajax({
     url: `/data/${itemName}/`,
     success: function(data){
