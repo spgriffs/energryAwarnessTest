@@ -19,7 +19,7 @@ https://github.com/gitdaddy/CS5890_arrow_dynamics_vis
 
 ## Background and Motivation ##
 
-When the Tacebase dataset on appliance power usage was discovered, we pictured the usefulness it could mean for people who want to better understand their power consumption. Understanding power trends in your home environment can help lead to more efficient living and reduce spending. Most if not all of us have to pay for power expenses. Being able to quickly analyze real world data can help provide critical insight into our own consumption footprint.
+When we found the Tacebase dataset on appliance power usage, we pictured it's usefulness for people who want to better understand their power consumption. Understanding power trends in your home environment can help lead to more efficient living and reduce spending. Most if not all of us have to pay for power expenses. Being able to quickly analyze real world data can help provide critical insight into our own consumption footprint.
 
 ----
 
@@ -40,10 +40,8 @@ When the Tacebase dataset on appliance power usage was discovered, we pictured t
 ----
 
 ## Data ##
-## TODO: add more detail about the data
 We got our data from a github repository called tracebase.
-The data contains timestamps for specific appliances and their power draw for that time. The time between samples ranges but is around 5 seconds between readings. The data is sparse as to which appliances have use on which days, i.e. all appliances do not have data for each day. Typically the data for a particular appliance has samples of 5 seconds for a single day to over a week.
-
+The data contains timestamps for specific appliances and their power draw for that time. The time between samples ranges but is around 5 seconds between readings. The data is sparse as to which appliances have use on which days, i.e. all appliances do not have data for each day. Typically the data for a particular appliance has samples of 5 seconds spanning a single day to over a week.
 
 Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
@@ -51,58 +49,41 @@ Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
 ## Data Processing ##
 
-The Tracebase dataset is stored in a number of CSV files. The size of each file can be up to 5-10 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computationally with a large number of files. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps for the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially be processing will be stored on disk in the project workspace.
+The Tracebase dataset is stored in a number of CSV files. The size of each file can be up to 5-10 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computationally with a large number of files. We plan on combining this data into a single csv file for each appliance to save on file read times. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps for the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially be processing will be stored on disk in the project workspace.
 
 
 ----
 
 ## Visualization Design ##
 
-* How will you display your data? Provide some general ideas that you have for the visualization design.
-* Develop three alternative prototype designs for your visualization.
-* Create one final design that incorporates the best of your three designs.
-* Describe your designs and justify your choices of visual encodings.
-* We recommend you use the Five Design Sheet Methodology (Links to an external site.).
-
-
-### Visualization Prototype 1 ###
-### Calendar view
+### Calendar view ###
 This view gives an over view of the time series data for the selected appliances. Each day of the month will represented with a rectangle whose color will be based on the total usage for that day for each appliance selected. Darker for more usage, lighter for less. This visualization is the link between the other visualizations. The user will be able to select days or weeks of the month in which they are interested, each selection will update the other visualizations.
 
-### Old
-Provide a calendar view to give more context to this vis. As a stretch goal it would be great to create an animation of the heat map to show consumption over time. See heatMap.jpg and calendarView.jpg in the images folder for more detail about this design.
+### Stacked area graph ###
+ This visualization is a stacked area graph. In this vis the data is displayed to the user in the main section of the page. As the user selects which days and weeks they are interested in the visualization scales to show all the data for the select days. The user can then  See stacked_area.jpg in the images folder for more detail about this design.
 
-### Visualization Prototype 1 ###
- The first visualization prototype is a stacked area graph. In this vis the data is displayed to the user in the main section of the page. With interactive zooming/brushing the data will scale to the more finite time series. See stacked_area.jpg in the images folder for more detail about this design.
+### Stacked Bar ###
+  This visualization is a single bar the length of which represents the total power used for the selected time frame selected with the calendar view. Each selected appliance is represented with a separate color and has a length based on the percentage of the total power used.
 
-### Visualization Prototype 2 ??? REMOVE ??? ###
- The second visualization prototype is a bubble chart. The bubble chart vis displays the item categories as separate bubbles with the value or consumption of the item as encoded as the size of the bubble. With interactive clicking the vis will transition into sub-groups to provide useful information. For example if a subgroup could be classified by the week or day of the week. See bubble_chart.jpg in the images folder for more detail about this design.
-
-
+### Small Multiples ###
+  This visualization is made up of multiple line charts, one for each appliance selected. Each is a line chart which shows the total usage for that appliance over the selected timeframe.
 
 ### Must Have Features ###
 * The user will be able to select which appliances they are interested in, this should update all visualizations accordingly.
 * The user will be able to select which days or weeks to see time series data for, this will be updated on an area graph. This chart will have the usage for the selected appliances, the scale will change as more or less days are selected.
 * The user will be able to compare the average daily use of selected appliances on an area chart. This area chart will have the average usage for each hour in a day.
-### old:   
-* A way for the user to compare different appliances side by side.
-* A way for the user to select which appliances to compare.
-* A way for the user to see trends over time.
-* A way for the user to see total energy usage when using selected appliances.
 
 ### Optional Features ###
 * A game in which the usage for an unlabeled appliance is shown. The user then has to guess which appliance is shown. When an incorrect appliance is shown the selected appliance usage is shown. This game is intended to show users how many appliances it takes to match the usage of the appliance that uses the most energy.
-### old:
-* An interactive game to guess which appliance usage is shown
-* Beautiful animations and transitions.
 
 ### Final Design ###
-In the final design we plan to implement the prototypes listed by allowing the user to select the visualization they prefer. We will allow user to select or scroll to the visualization that they wish to view. All visualizations will update based on the item selection. The item selection will be available for the user to easily choose which items to compare. Loading all the items initially at once will probably introduce lag on the system. The center main page will feature the selected visualization. See site_layout#.jpg for more detail on this design.
+In the final design we plan to have the user interact with the calendar view to select the timeframe they are interested in. When the user selects a timeframe the other visualizations are updated for that timeframe. The user will be able to navigate to the visualizations by scrolling or by selecting the visualization from the navigation bar. The user will also be able to select the appliances they are interested in by opening the sidebar in which the available appliances can be selected by checking the corresponding checkbox.
+
+In the final design we plan to implement the visualizations listed by allowing the user to select the visualization they prefer. We will allow user to select or scroll to the visualization that they wish to view. All visualizations will update based on the item selection. The item selection will be available for the user to easily choose which items to compare. Loading all the items initially at once will probably introduce lag on the system. The center main page will feature the selected visualization. See site_layout#.jpg for more detail on this design.
 
 ----
 
 ## Project Schedule ##
-Make sure that you plan your work so that you can avoid a big rush right before the final project deadline, and delegate different modules and responsibilities among your team members. Write this in terms of weekly deadlines.
 
 ### Week 1:
 * Read in data (Daniel)
