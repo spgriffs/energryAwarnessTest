@@ -51,22 +51,21 @@ Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
 The Tracebase dataset is stored in a number of CSV files. The size of each file can be up to 5-10 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computationally with a large number of files. We plan on combining this data into a single csv file for each appliance to save on file read times. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps for the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially be processing will be stored on disk in the project workspace.
 
-
 ----
 
 ## Visualization Design ##
 
 ### Calendar view ###
-This view gives an over view of the time series data for the selected appliances. Each day of the month will represented with a rectangle whose color will be based on the total usage for that day for each appliance selected. Darker for more usage, lighter for less. This visualization is the link between the other visualizations. The user will be able to select days or weeks of the month in which they are interested, each selection will update the other visualizations.
+This view gives an overview of the time series data for the selected appliances. Each day of the month will be represented with a rectangle whose color will be based on the total usage for that day for each appliance selected. Darker for more usage, lighter for less. This visualization is the link between the other visualizations. The user will be able to select days or weeks of the month in which they are interested, each selection will update the other visualizations.
 
 ### Stacked area graph ###
- This visualization is a stacked area graph. In this vis the data is displayed to the user in the main section of the page. As the user selects which days and weeks they are interested in the visualization scales to show all the data for the select days. The user can then  See stacked_area.jpg in the images folder for more detail about this design.
+ This visualization is a stacked area graph. In this visualization the data is displayed in the main section of the page. As the user selects which days and weeks they are interested in the visualization scales to show all the data for the select days. The user from here can then select which subset of the data to see a more detailed view. This selection would update the calendar view as well.  See stacked_area.jpg in the images folder for more detail about this design.
 
 ### Stacked Bar ###
-  This visualization is a single bar the length of which represents the total power used for the selected time frame selected with the calendar view. Each selected appliance is represented with a separate color and has a length based on the percentage of the total power used.
+  This visualization is a single bar, the length of which represents the total power used for the selected time frame selected with the calendar view or the stacked area graph. Each selected appliance is represented with a separate color and has a length based on the percentage of the total power used.
 
 ### Small Multiples ###
-  This visualization is made up of multiple line charts, one for each appliance selected. Each is a line chart which shows the total usage for that appliance over the selected timeframe.
+  This visualization is made up of multiple line charts, one for each appliance selected. Each is a line chart which shows the total usage for that appliance over the selected timeframe, days if selection greater than a week, hours if a day and minuets if an hour.
 
 ### Must Have Features ###
 * The user will be able to select which appliances they are interested in, this should update all visualizations accordingly.
@@ -78,8 +77,6 @@ This view gives an over view of the time series data for the selected appliances
 
 ### Final Design ###
 In the final design we plan to have the user interact with the calendar view to select the timeframe they are interested in. When the user selects a timeframe the other visualizations are updated for that timeframe. The user will be able to navigate to the visualizations by scrolling or by selecting the visualization from the navigation bar. The user will also be able to select the appliances they are interested in by opening the sidebar in which the available appliances can be selected by checking the corresponding checkbox.
-
-In the final design we plan to implement the visualizations listed by allowing the user to select the visualization they prefer. We will allow user to select or scroll to the visualization that they wish to view. All visualizations will update based on the item selection. The item selection will be available for the user to easily choose which items to compare. Loading all the items initially at once will probably introduce lag on the system. The center main page will feature the selected visualization. See site_layout#.jpg for more detail on this design.
 
 ----
 
