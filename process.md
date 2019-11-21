@@ -19,7 +19,7 @@ https://github.com/gitdaddy/CS5890_arrow_dynamics_vis
 
 ## Background and Motivation ##
 
-When the Tacebase dataset was discovered, we pictured the usefulness it could mean for people who want to better understand their power consumption. Understanding power trends in your home environment can help lead to more efficient living and reduce spending. Most if not all of us have to pay for power expenses. Being able to quickly analyze real world data can help provide critical insight into our own consumption footprint.
+When the Tacebase dataset on appliance power usage was discovered, we pictured the usefulness it could mean for people who want to better understand their power consumption. Understanding power trends in your home environment can help lead to more efficient living and reduce spending. Most if not all of us have to pay for power expenses. Being able to quickly analyze real world data can help provide critical insight into our own consumption footprint.
 
 ----
 
@@ -40,7 +40,10 @@ When the Tacebase dataset was discovered, we pictured the usefulness it could me
 ----
 
 ## Data ##
+## TODO: add more detail about the data
 We got our data from a github repository called tracebase.
+The data contains timestamps for specific appliances and their power draw for that time. The time between samples ranges but is around 5 seconds between readings. The data is sparse as to which appliances have use on which days, i.e. all appliances do not have data for each day. Typically the data for a particular appliance has samples of 5 seconds for a single day to over a week.
+
 
 Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
