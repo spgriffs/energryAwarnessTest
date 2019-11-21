@@ -1,7 +1,7 @@
 "using strict";
 
 let itemList = [
-  { label: "Alarmclock", dir: "Alarmclock", loadOnStart: true },
+  { label: "Alarmclock", dir: "Alarmclock", loadOnStart: false },
   { label: "Amplifier", dir: "Amplifier", loadOnStart: false },
   { label: "Bean To Cup Coffee Maker", dir: "BeanToCupCoffeemaker", loadOnStart: false },
   { label: "Bread Cutter", dir: "Breadcutter", loadOnStart: false },
@@ -71,7 +71,7 @@ function pageInit() {
 
   let calendar = d3.select("#calendar").selectAll("svg").selectAll("g").selectAll("rect").data(days).enter().append("g");
 
-    calendar.append("rect").attr("width", "5%").attr("height", "85%").style("fill", "#8D230F")
+    calendar.append("rect").attr("width", "5%").attr("height", "45%").style("fill", "#8D230F")
         .on("click", function () {
             console.log(d3.select(this)["_groups"][0][0]["className"]["baseVal"]);
             if(d3.select(this)["_groups"][0][0]["className"]["baseVal"] === "rectSelected"){
@@ -96,7 +96,7 @@ function pageInit() {
   let rec = calendar
       .append("rect")
       .attr("width", "12.5%")
-      .attr("height", "85%")
+      .attr("height", "45%")
       .attr("x", function (d, i) {
         return (((13 * i) + .5 + 5) + "%");
       })
@@ -134,7 +134,7 @@ function pageInit() {
       .attr("x", function (d, i) {
         return (((13 * i) + 7) + "%");
       })
-      .attr("y","19px")
+      .attr("y","8px")
   ;
 
   drawInit();
