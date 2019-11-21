@@ -69,14 +69,36 @@ function pageInit() {
     })
     ;
 
-  let calandar = d3.select("#calendar").selectAll("svg").selectAll("g").selectAll("rect").data(days).enter().append("g");
+  let calendar = d3.select("#calendar").selectAll("svg").selectAll("g").selectAll("rect").data(days).enter().append("g");
 
-  let rec = calandar
+    calendar.append("rect").attr("width", "5%").attr("height", "85%").style("fill", "#8D230F")
+        .on("click", function () {
+            console.log(d3.select(this)["_groups"][0][0]["className"]["baseVal"]);
+            if(d3.select(this)["_groups"][0][0]["className"]["baseVal"] === "rectSelected"){
+                console.log("found class");
+                d3.select(this).attr("class", "");
+            }else{
+                console.log("no class");
+                d3.select(this).attr("class", "rectSelected");
+            }
+        })
+        .on("mouseover", function () {
+            d3.select(this).style("fill", "#af6557");
+            d3.select(this).style("cursor", "pointer");
+        })
+        .on("mouseout", function () {
+            d3.select(this).style("fill", "#8D230F");
+            d3.select(this).style("cursor", "default");
+        })
+
+    ;
+
+  let rec = calendar
       .append("rect")
       .attr("width", "12.5%")
       .attr("height", "85%")
       .attr("x", function (d, i) {
-        return (((13 * i) + .5) + "%");
+        return (((13 * i) + .5 + 5) + "%");
       })
       .attr("day", function (d) {
           return d.name;
@@ -101,11 +123,16 @@ function pageInit() {
         d3.select(this).style("cursor", "default");
       })
   ;
-  calandar.append("text").text(function (d) {
+    calendar.append("text").text(function (d) {
+      if(typeof d !== 'undefined')
+      {
           return d.name;
+      }else{
+          return "Week"
+      }
       })
       .attr("x", function (d, i) {
-        return (((13 * i) + 2) + "%");
+        return (((13 * i) + 7) + "%");
       })
       .attr("y","19px")
   ;
