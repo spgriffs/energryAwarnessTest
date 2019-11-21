@@ -61,22 +61,35 @@ The Tracebase dataset is stored in a number of CSV files. The size of each file 
 * Describe your designs and justify your choices of visual encodings.
 * We recommend you use the Five Design Sheet Methodology (Links to an external site.).
 
+
+### Visualization Prototype 1 ###
+### Calendar view
+This view gives an over view of the time series data for the selected appliances. Each day of the month will represented with a rectangle whose color will be based on the total usage for that day for each appliance selected. Darker for more usage, lighter for less. This visualization is the link between the other visualizations. The user will be able to select days or weeks of the month in which they are interested, each selection will update the other visualizations.
+
+### Old
+Provide a calendar view to give more context to this vis. As a stretch goal it would be great to create an animation of the heat map to show consumption over time. See heatMap.jpg and calendarView.jpg in the images folder for more detail about this design.
+
 ### Visualization Prototype 1 ###
  The first visualization prototype is a stacked area graph. In this vis the data is displayed to the user in the main section of the page. With interactive zooming/brushing the data will scale to the more finite time series. See stacked_area.jpg in the images folder for more detail about this design.
 
-### Visualization Prototype 2 ###
+### Visualization Prototype 2 ??? REMOVE ??? ###
  The second visualization prototype is a bubble chart. The bubble chart vis displays the item categories as separate bubbles with the value or consumption of the item as encoded as the size of the bubble. With interactive clicking the vis will transition into sub-groups to provide useful information. For example if a subgroup could be classified by the week or day of the week. See bubble_chart.jpg in the images folder for more detail about this design.
 
-### Visualization Prototype 3 ###
-The third prototype involves a heat map which provides spatial orientation to the user to show where consumption levels are at the highest. For this vis some of the data will need to be assumed such as the oven is in the kitchen and the TV is in the living space etc. Additionally we can provide a calendar view to give more temporal context to this vis. As a stretch goal it would be great to create an animation of the heat map to show consumption over time. See heatMap.jpg and calendarView.jpg in the images folder for more detail about this design.
+
 
 ### Must Have Features ###
+* The user will be able to select which appliances they are interested in, this should update all visualizations accordingly.
+* The user will be able to select which days or weeks to see time series data for, this will be updated on an area graph. This chart will have the usage for the selected appliances, the scale will change as more or less days are selected.
+* The user will be able to compare the average daily use of selected appliances on an area chart. This area chart will have the average usage for each hour in a day.
+### old:   
 * A way for the user to compare different appliances side by side.
 * A way for the user to select which appliances to compare.
 * A way for the user to see trends over time.
 * A way for the user to see total energy usage when using selected appliances.
 
 ### Optional Features ###
+* A game in which the usage for an unlabeled appliance is shown. The user then has to guess which appliance is shown. When an incorrect appliance is shown the selected appliance usage is shown. This game is intended to show users how many appliances it takes to match the usage of the appliance that uses the most energy.
+### old:
 * An interactive game to guess which appliance usage is shown
 * Beautiful animations and transitions.
 
@@ -97,7 +110,6 @@ Make sure that you plan your work so that you can avoid a big rush right before 
 * Calendar/week view (Spencer)
 * Aggregate area chart. Show accumulated power usage for a single day (Daniel)
 ### Week 3:
-* Bubble chart (Daniel)
 * Comparison vis. can be built off of same basic form as aggregate area chart. (Spencer)
 ### Week 4:
 * Polish Items (Both)
