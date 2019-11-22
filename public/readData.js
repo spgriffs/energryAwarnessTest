@@ -12,6 +12,11 @@ let g_dataset = {};
 
 let areaChartId = "area-chart";
 
+Date.prototype.addHours = function(h){
+  this.setHours(this.getHours()+h);
+  return this;
+}
+
 function onItemChecked(item){
   console.log("checked:" + item.value + " - reading in data...");
   if (item.checked) {
@@ -34,6 +39,34 @@ function getDateObj(str) {
     parseInt(timeArray[0]),
     parseInt(timeArray[1]),
     parseInt(timeArray[2]));
+}
+
+// returns the data vales array
+// with hour sum intervals
+function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
+  // go to the next interval and sum all of the
+  // values for each interval
+  var curDate = new Date(valuesArray[0].date.getTime());
+  var hoursResRecords = [];
+  curDate.addHours(1);
+  var sumObj = createNewDatasetObject("", curDate);
+  _.each(valuesArray, function(secondResRecord) {
+    if (secondResRecord.date > curDate) {
+      // update hour record
+      hoursResRecords.push(sumObj);
+      curDate.addHours(1);
+      sumObj = createNewDatasetObject("", curDate);
+    }
+    // otherwise add the record values
+    _.each(keys, function(key) {
+      sumObj[key] += secondResRecord[key];
+    })
+  });
+
+  // add the final sum object for the last hour
+  hoursResRecords.push(sumObj);
+
+  return hoursResRecords;
 }
 
 function getStartAndEndDates() {
@@ -73,20 +106,21 @@ function setAsUnselected(itemName, onUnselectedCallback) {
   onUnselectedCallback(itemName);
 }
 
-function createNewDatasetObject(dateStr) {
+function createNewDatasetObject(dateStr, optDate = null) {
   // just some data for a proof of concept
-  var startVal = 4 + Math.round((2 * Math.random()));
+  // var startVal = 4 + Math.round((2 * Math.random()));
+  var startVal = 0;
   // Uncomment the following lines this is just
   // for testing purposes
   return {
-     date: getDateObj(dateStr),
-     Alarmclock: startVal,     
-    //  Amplifier: startVal,
+     date: optDate ? new Date(optDate.getTime()) : getDateObj(dateStr),
+     Alarmclock: startVal,
+     Amplifier: startVal,
      BeanToCupCoffeemaker: startVal,
      Breadcutter: startVal,
      CdPlayer: startVal,
-    //  Charger: startVal,
-    //  Charger: startVal,
+     Charger: startVal,
+     Charger: startVal,
      Coffeemaker: startVal,
      Cookingstove: startVal,
      DigitalTvReceiver: startVal,
@@ -96,14 +130,14 @@ function createNewDatasetObject(dateStr) {
      Freezer: startVal,
      Iron: startVal,
      Lamp: startVal,
-     LaundryDryer: startVal,
-     MicrowaveOven: startVal,
-    //  Monitor: startVal,
-    //  Monitor: startVal,
+    //  LaundryDryer: startVal,
+    //  MicrowaveOven: startVal,
+     Monitor_CRT: startVal,
+    //  Monitor_TFT: startVal,
      Multimediacenter: startVal,
-    //  PC: startVal,
-    //  PC: startVal,
-    //  Playstation3: startVal,
+    //  PC_Desktop: startVal,
+    //  PC_Laptop: startVal,
+     Playstation3: startVal,
     //  Printer: startVal,
     //  Projector: startVal,
     //  Refrigerator: startVal,

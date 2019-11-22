@@ -41,7 +41,42 @@ When we found the Tacebase dataset on appliance power usage, we pictured it's us
 
 ## Data ##
 We got our data from a github repository called tracebase.
-The data contains timestamps for specific appliances and their power draw for that time. The time between samples ranges but is around 5 seconds between readings. The data is sparse as to which appliances have use on which days, i.e. all appliances do not have data for each day. Typically the data for a particular appliance has samples of 5 seconds spanning a single day to over a week.
+The data contains timestamps for specific appliances and their power draw for that time.
+
+Each item will contain the following format when parsed:
+Date: "1/11/2011 00:00:04"
+CurrentVal: 2
+AverageVal: 3 // value averaged over a few number of seconds
+
+We will be placing the data into records. Each record holds all the keys for each item.
+This will allow us to easily treat all values as the same.
+
+The entire dataset will be composed of a list key timestamps to record values.
+This will make it easy to get and set values have have already been initialized for that date time.
+
+The dataset will likely follow this json format:
+Dataset
+["1/11/2011 00:00:04": {
+  date: JavaScript Date object
+  Item1: 0 // the value here will be the provided average value
+  Item2: 1
+  Item3: 2
+  .
+  .
+  .
+},
+"1/11/2011 00:00:09": {
+  date: JavaScript Date object
+  Item1: 3
+  Item2: 1
+  Item3: 1
+  .
+  .
+  .
+},
+]
+
+The time between samples ranges but is typically around 5 seconds between readings. The data is sparse as to which appliances have use on which days, i.e. all appliances do not have data for each day. Typically the data for a particular appliance has samples of 5 seconds spanning a single day to over a week.
 
 Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
@@ -49,7 +84,7 @@ Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
 ## Data Processing ##
 
-The Tracebase dataset is stored in a number of CSV files. The size of each file can be up to 5-10 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computationally with a large number of files. We plan on combining this data into a single csv file for each appliance to save on file read times. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps for the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially be processing will be stored on disk in the project workspace.
+The Tracebase dataset is stored in a number of CSV files. The size of each file can be up to 5-35 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computationally with a large number of files. We plan on combining this data into a single csv file for each appliance to save on file read times. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps for the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially be processing will be stored on disk in the project workspace.
 
 ----
 
@@ -65,7 +100,7 @@ This view gives an overview of the time series data for the selected appliances.
   This visualization is a single bar, the length of which represents the total power used for the selected time frame selected with the calendar view or the stacked area graph. Each selected appliance is represented with a separate color and has a length based on the percentage of the total power used.
 
 ### Small Multiples ###
-  This visualization is made up of multiple line charts, one for each appliance selected. Each is a line chart which shows the total usage for that appliance over the selected timeframe, days if selection greater than a week, hours if a day and minuets if an hour.
+  This visualization is made up of multiple line charts, one for each appliance selected. Each is a line chart which shows the total usage for that appliance over the selected time frame, days if selection greater than a week, hours if a day and minuets if an hour.
 
 ### Must Have Features ###
 * The user will be able to select which appliances they are interested in, this should update all visualizations accordingly.
@@ -76,7 +111,7 @@ This view gives an overview of the time series data for the selected appliances.
 * A game in which the usage for an unlabeled appliance is shown. The user then has to guess which appliance is shown. When an incorrect appliance is shown the selected appliance usage is shown. This game is intended to show users how many appliances it takes to match the usage of the appliance that uses the most energy.
 
 ### Final Design ###
-In the final design we plan to have the user interact with the calendar view to select the timeframe they are interested in. When the user selects a timeframe the other visualizations are updated for that timeframe. The user will be able to navigate to the visualizations by scrolling or by selecting the visualization from the navigation bar. The user will also be able to select the appliances they are interested in by opening the sidebar in which the available appliances can be selected by checking the corresponding checkbox.
+In the final design we plan to have the user interact with the calendar view to select the time frame they are interested in. When the user selects a time frame the other visualizations are updated for that time frame. The user will be able to navigate to the visualizations by scrolling or by selecting the visualization from the navigation bar. The user will also be able to select the appliances they are interested in by opening the sidebar in which the available appliances can be selected by checking the corresponding checkbox.
 
 ----
 

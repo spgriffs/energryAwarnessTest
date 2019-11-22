@@ -18,7 +18,7 @@ var xChartScale = d3.scaleTime()
     .range([chartMargin.left, chartWidth - chartMargin.right]);
 
 let yChartScale = d3.scaleLinear()
-    .domain([0, 160])
+    .domain([0, 1600])
     .range([chartHeight, 0]);
 
 var area = d3.area()
@@ -89,8 +89,9 @@ function onDataUpdate(listName) {
   // var values = _.values(g_dataset);
   var values = _.values(g_dataset);
   var keys = _.keys(values[0]).slice(1);
+  var hourResValues = getDataWithHourResolution(keys, values, 12);
   console.log(listName + " has new data has been loaded and is ready to draw");
-  var series = d3.stack().keys(keys)(values);
+  var series = d3.stack().keys(keys)(hourResValues);
   chartLayers.selectAll("path")
     .data(series)
     .join("path")
