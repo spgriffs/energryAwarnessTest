@@ -1,110 +1,127 @@
 "use strict";
 
-// format [{label: data: []}....]
-//$ python -m SimpleHTTPServer 8080
+/*
+# python 2
+python -m SimpleHTTPServer
+# python 3
+python -m http.server
+*/
 
 // global dataset
 let g_dataset = {};
 
+let areaChartId = "area-chart";
+
 function onItemChecked(item){
   console.log("checked:" + item.value + " - reading in data...");
   if (item.checked) {
-    readInDataItem(item.value, item.label, onDataUpdate);
+    readInDataItem(item.value, onDataUpdate, areaChartId);
   } else {
     setAsUnselected(item.value, onDataUnselected);
   }
   // console.log("got here");
 }
 
+function getDateObj(str) {
+  var dateStr = str.split(" ");
+  var dateArray = dateStr[0].split("/");
+  var timeArray = dateStr[1].split(":");
+  // new Date(year, month, day, hours, minutes, seconds, milliseconds);
+  return new Date(
+    parseInt(dateArray[2]),
+    parseInt(dateArray[0]),
+    parseInt(dateArray[1]),
+    parseInt(timeArray[0]),
+    parseInt(timeArray[1]),
+    parseInt(timeArray[2]));
+}
+
 function getStartAndEndDates() {
   var keys = _.keys(g_dataset);
   var startDate = new Date();
   var endDate = new Date();
-  if (keys.length !== 0) {
-    startDate = g_dataset[keys[0]].startDate;
-    endDate = g_dataset[keys[0]].endDate;
-    _.each(_.keys(g_dataset), function(key) {
-      if (g_dataset[key].startDate < startDate && g_dataset[key].selected) {
-        startDate = g_dataset[key].startDate;
-      }
-      if (g_dataset[key].endDate > endDate && g_dataset[key].selected) {
-        endDate = g_dataset[key].endDate;
-      }
-    });
+  if (keys.length > 0) {
+   startDate = getDateObj(keys[0]);
+   endDate = getDateObj(keys[keys.length -1]);
   }
-
   return {
     start: startDate,
     end: endDate,
   };
 }
 
-function readInDataItem(itemName, label, onNewDataCallback){
-  if (g_dataset[itemName]) return;
+function readInDataItem(itemName, onNewDataCallback, optElementId = undefined){
+  if (optElementId) startSpinner(optElementId);
+  if (getItemLoadStatus(itemName) > 0) return;
+  setItemLoadStatus(itemName, 1); // loading
   d3.csv(`compressedData/${itemName}.csv`).then(function (fileData){
-    console.log("Got Data...");
+    _.each(fileData, function(row) {
+      var str1 = row[_.keys(row)[0]].split(";");
+      if (!g_dataset[str1[0]]) {
+        g_dataset[str1[0]] = createNewDatasetObject(str1[0]);
+      }
+      g_dataset[str1[0]][itemName] = parseInt(str1[2]);
+    });
+    setItemLoadStatus(itemName, 2); // loaded
+    onNewDataCallback(itemName);
   });
-
-  // $.ajax({
-  //   url: `/data/${itemName}/`,
-  //   success: function(data){
-  //     var found = $(data).find("li > a");
-  //       var fileCount = 1;
-  //       for (var i = 0; i < found.length; i++)
-  //       {
-  //         var filename = found[i].innerHTML;
-  //         // binary or all in one file
-  //         d3.csv(`data/${itemName}/${filename}`).then(function (fileData){
-  //           // Example input:
-  //           // 0: {01/09/2011 00:00:02;0;0: "01/09/2011 00:00:04;2;0"}
-  //           // 1: {01/09/2011 00:00:02;0;0: "01/09/2011 00:00:04;2;0"}
-  //           // console.log("file data ...");
-  //           // Item Format: {itemName: {label, selected, days: []}}
-  //           // Data format: {date, val, valAverage}
-
-  //           var dayData = _.map(fileData, function (row) {
-  //             var str1 = row[_.keys(row)[0]].split(";");
-  //             var dateStr = str1[0].split(" ");
-  //             // return {day: dateStr[0], time: dateStr[1],
-  //             //         val: parseInt(str1[1]), valAverage: parseInt(str1[2])};
-  //             var dateArray = dateStr[0].split("/");
-  //             var timeArray = dateStr[1].split(":");
-  //             var date = new Date(
-  //               parseInt(dateArray[2]),
-  //               parseInt(dateArray[1]),
-  //               parseInt(dateArray[0]),
-  //               parseInt(timeArray[0]),
-  //               parseInt(timeArray[1]),
-  //               parseInt(timeArray[2]));
-  //             return {
-  //               date: date,
-  //               val: parseInt(str1[1]), valAverage: parseInt(str1[2])
-  //             };
-  //           });
-
-  //           if (g_dataset[itemName]) { // if the item is already defined
-  //             g_dataset[itemName].days.push(dayData);
-  //           } else {
-  //             g_dataset[itemName] = {
-  //               startDate: dayData[0].date, // the data is ordered by time
-  //               label: label,
-  //               selected: true,
-  //               days: []};
-  //             g_dataset[itemName].days.push(dayData);
-  //           }
-  //           console.log(`read data: ${itemName} file ${fileCount} of ${found.length}`);
-  //           if (fileCount === found.length) {
-  //             g_dataset[itemName].endDate = dayData[dayData.length - 1].date;
-  //             onNewDataCallback(itemName);
-  //           }
-  //           fileCount++;
-  //         });
-  //       }
-  //   }
-  // });
 }
 
 function setAsUnselected(itemName, onUnselectedCallback) {
-  g_dataset[itemName].selected = false;
+  // TODO remove the data from the dataset
+  // g_dataset[itemName].selected = false;
   onUnselectedCallback(itemName);
+}
+
+function createNewDatasetObject(dateStr) {
+  // just some data for a proof of concept
+  var startVal = 4 + Math.round((2 * Math.random()));
+  // Uncomment the following lines this is just
+  // for testing purposes
+  return {
+     date: getDateObj(dateStr),
+     Alarmclock: startVal,     
+    //  Amplifier: startVal,
+     BeanToCupCoffeemaker: startVal,
+     Breadcutter: startVal,
+     CdPlayer: startVal,
+    //  Charger: startVal,
+    //  Charger: startVal,
+     Coffeemaker: startVal,
+     Cookingstove: startVal,
+     DigitalTvReceiver: startVal,
+     Dishwasher: startVal,
+     DvdPlayer: startVal,
+     EthernetSwitch: startVal,
+     Freezer: startVal,
+     Iron: startVal,
+     Lamp: startVal,
+     LaundryDryer: startVal,
+     MicrowaveOven: startVal,
+    //  Monitor: startVal,
+    //  Monitor: startVal,
+     Multimediacenter: startVal,
+    //  PC: startVal,
+    //  PC: startVal,
+    //  Playstation3: startVal,
+    //  Printer: startVal,
+    //  Projector: startVal,
+    //  Refrigerator: startVal,
+    //  RemoteDesktop: startVal,
+    //  Router: startVal,
+    //  SolarThermalSystem: startVal,
+    //  Subwoofer: startVal,
+    //  Toaster: startVal,
+    //  TV-CRT: startVal,
+    //  TV-LCD: startVal,
+    //  USBHarddrive: startVal,
+    //  USBHub: startVal,
+    //  VacuumCleaner: startVal,
+    //  VideoProjector: startVal,
+    //  Washingmachine: startVal,
+    //  WaterBoiler: startVal,
+    //  WaterFountain: startVal,
+    //  WaterKettle: startVal,
+    //  XmasLights: startVal,
+  };
 }

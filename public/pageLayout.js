@@ -1,50 +1,65 @@
 "using strict";
 
+// load status [0 - not loaded, 1 - loading, 2 - loaded and read]
 let itemList = [
-  { label: "Alarmclock", dir: "Alarmclock", loadOnStart: false },
-  { label: "Amplifier", dir: "Amplifier", loadOnStart: false },
-  { label: "Bean To Cup Coffee Maker", dir: "BeanToCupCoffeemaker", loadOnStart: false },
-  { label: "Bread Cutter", dir: "Breadcutter", loadOnStart: false },
-  { label: "Cd Player", dir: "CdPlayer", loadOnStart: false },
-  { label: "Charger PSP", dir: "Charger-PSP", loadOnStart: false },
-  { label: "Charger Smartphone", dir: "Charger-Smartphone", loadOnStart: false },
-  { label: "Coffee Maker", dir: "Coffeemaker", loadOnStart: false },
-  { label: "Cooking Stove", dir: "Cookingstove", loadOnStart: false },
-  { label: "Digital Tv Receiver", dir: "DigitalTvReceiver", loadOnStart: false },
-  { label: "Dishwasher", dir: "Dishwasher", loadOnStart: false },
-  { label: "Dvd Player", dir: "DvdPlayer", loadOnStart: false },
-  { label: "Ethernet Switch", dir: "EthernetSwitch", loadOnStart: false },
-  { label: "Freezer", dir: "Freezer", loadOnStart: false },
-  { label: "Iron", dir: "Iron", loadOnStart: false },
-  { label: "Lamp", dir: "Lamp", loadOnStart: false },
-  { label: "Laundry Dryer", dir: "LaundryDryer", loadOnStart: false },
-  { label: "Microwave Oven", dir: "MicrowaveOven", loadOnStart: false },
-  { label: "Monitor CRT", dir: "Monitor-CRT", loadOnStart: false },
-  { label: "Monitor TFT", dir: "Monitor-TFT", loadOnStart: false },
-  { label: "Multi-media Center", dir: "Multimediacenter", loadOnStart: false },
-  { label: "PC Desktop", dir: "PC-Desktop", loadOnStart: false },
-  { label: "PC Laptop", dir: "PC-Laptop", loadOnStart: false },
-  { label: "Playstation3", dir: "Playstation3", loadOnStart: false },
-  { label: "Printer", dir: "Printer", loadOnStart: false },
-  { label: "Projector", dir: "Projector", loadOnStart: false },
-  { label: "Refrigerator", dir: "Refrigerator", loadOnStart: false },
-  { label: "Remote Desktop", dir: "RemoteDesktop", loadOnStart: false },
-  { label: "Router", dir: "Router", loadOnStart: false },
-  { label: "Solar Thermal System", dir: "SolarThermalSystem", loadOnStart: false },
-  { label: "Subwoofer", dir: "Subwoofer", loadOnStart: false },
-  { label: "Toaster", dir: "Toaster", loadOnStart: false },
-  { label: "TV CRT", dir: "TV-CRT", loadOnStart: false },
-  { label: "TV LCD", dir: "TV-LCD", loadOnStart: false },
-  { label: "USB Harddrive", dir: "USBHarddrive", loadOnStart: false },
-  { label: "USB Hub", dir: "USBHub", loadOnStart: false },
-  { label: "Vacuum Cleaner", dir: "VacuumCleaner", loadOnStart: false },
-  { label: "Video Projector", dir: "VideoProjector", loadOnStart: false },
-  { label: "Washing Machine", dir: "Washingmachine", loadOnStart: false },
-  { label: "Water Boiler", dir: "WaterBoiler", loadOnStart: false },
-  { label: "Water Fountain", dir: "WaterFountain", loadOnStart: false },
-  { label: "Water Kettle", dir: "WaterKettle", loadOnStart: false },
-  { label: "Xmas Lights", dir: "XmasLights", loadOnStart: false }
+  { label: "Alarmclock", filename: "Alarmclock", loadOnStart: false, loadStatus: 0 },
+  // { label: "Amplifier", filename: "Amplifier", loadOnStart: true, loadStatus: 0 },
+  { label: "Bean To Cup Coffee Maker", filename: "BeanToCupCoffeemaker", loadOnStart: false, loadStatus: 0 },
+  { label: "Bread Cutter", filename: "Breadcutter", loadOnStart: false, loadStatus: 0 },
+  { label: "Cd Player", filename: "CdPlayer", loadOnStart: false, loadStatus: 0 },
+  // { label: "Charger PSP", filename: "Charger-PSP", loadOnStart: false, loadStatus: 0 }, // TODO get columns with dashes to work
+  // { label: "Charger Smartphone", filename: "Charger-Smartphone", loadOnStart: false, loadStatus: 0 },
+  { label: "Coffee Maker", filename: "Coffeemaker", loadOnStart: false, loadStatus: 0 },
+  { label: "Cooking Stove", filename: "Cookingstove", loadOnStart: false, loadStatus: 0 },
+  { label: "Digital Tv Receiver", filename: "DigitalTvReceiver", loadOnStart: false, loadStatus: 0 },
+  { label: "Dishwasher", filename: "Dishwasher", loadOnStart: false, loadStatus: 0 },
+  { label: "Dvd Player", filename: "DvdPlayer", loadOnStart: false, loadStatus: 0 },
+  { label: "Ethernet Switch", filename: "EthernetSwitch", loadOnStart: false, loadStatus: 0 },
+  { label: "Freezer", filename: "Freezer", loadOnStart: false, loadStatus: 0 },
+  { label: "Iron", filename: "Iron", loadOnStart: false, loadStatus: 0 },
+  { label: "Lamp", filename: "Lamp", loadOnStart: false, loadStatus: 0 },
+  { label: "Laundry Dryer", filename: "LaundryDryer", loadOnStart: false, loadStatus: 0 },
+  { label: "Microwave Oven", filename: "MicrowaveOven", loadOnStart: false, loadStatus: 0 },
+  // { label: "Monitor CRT", filename: "Monitor-CRT", loadOnStart: false, loadStatus: 0 },
+  // { label: "Monitor TFT", filename: "Monitor-TFT", loadOnStart: false, loadStatus: 0 },
+  { label: "Multi-media Center", filename: "Multimediacenter", loadOnStart: false, loadStatus: 0 },
+  // { label: "PC Desktop", filename: "PC-Desktop", loadOnStart: false, loadStatus: 0 }, 
+  // { label: "PC Laptop", filename: "PC-Laptop", loadOnStart: false, loadStatus: 0 },
+  { label: "Playstation3", filename: "Playstation3", loadOnStart: false, loadStatus: 0 },
+  { label: "Printer", filename: "Printer", loadOnStart: false, loadStatus: 0 },
+  { label: "Projector", filename: "Projector", loadOnStart: false, loadStatus: 0 },
+  { label: "Refrigerator", filename: "Refrigerator", loadOnStart: false, loadStatus: 0 },
+  { label: "Remote Desktop", filename: "RemoteDesktop", loadOnStart: false, loadStatus: 0 },
+  { label: "Router", filename: "Router", loadOnStart: false, loadStatus: 0 },
+  { label: "Solar Thermal System", filename: "SolarThermalSystem", loadOnStart: false, loadStatus: 0 },
+  { label: "Subwoofer", filename: "Subwoofer", loadOnStart: false, loadStatus: 0 },
+  { label: "Toaster", filename: "Toaster", loadOnStart: false, loadStatus: 0 },
+  // { label: "TV CRT", filename: "TV-CRT", loadOnStart: false, loadStatus: 0 },
+  // { label: "TV LCD", filename: "TV-LCD", loadOnStart: false, loadStatus: 0 },
+  { label: "USB Harddrive", filename: "USBHarddrive", loadOnStart: false, loadStatus: 0 },
+  { label: "USB Hub", filename: "USBHub", loadOnStart: false, loadStatus: 0 },
+  { label: "Vacuum Cleaner", filename: "VacuumCleaner", loadOnStart: false, loadStatus: 0 },
+  { label: "Video Projector", filename: "VideoProjector", loadOnStart: false, loadStatus: 0 },
+  { label: "Washing Machine", filename: "Washingmachine", loadOnStart: false, loadStatus: 0 },
+  { label: "Water Boiler", filename: "WaterBoiler", loadOnStart: false, loadStatus: 0 },
+  { label: "Water Fountain", filename: "WaterFountain", loadOnStart: false, loadStatus: 0 },
+  { label: "Water Kettle", filename: "WaterKettle", loadOnStart: false, loadStatus: 0 },
+  { label: "Xmas Lights", filename: "XmasLights", loadOnStart: false, loadStatus: 0 }
 ];
+
+function getItemLoadStatus(filename) {
+  var item = _.find(itemList, function (i) {
+    return i.filename === filename;
+  });
+  return item.loadStatus;
+}
+
+function setItemLoadStatus(filename, status) {
+  var idx = _.findIndex(itemList, function (i) {
+    return i.filename === filename;
+  });
+  itemList[idx].loadStatus = status;
+}
 
 let days = [
     {name: "Sunday", value: "100"},
@@ -55,6 +70,7 @@ let days = [
     {name: "Friday", value: "100"},
     {name: "Saturday", value: "100"}
 ];
+
 function pageInit() {
   var itemSelection = d3.select("#mySidebar").selectAll("label").data(itemList);
   itemSelection.enter()
@@ -62,10 +78,10 @@ function pageInit() {
     .html(d => {
       // load a number of sets initially
       if (d.loadOnStart) {
-        onItemChecked({checked: true, value: d.dir, label: d.label});
-        return `<input type="checkbox" checked value="${d.dir}" onclick="onItemChecked(this)" /> ${d.label}`;
+        onItemChecked({checked: true, value: d.filename, label: d.label});
+        return `<input type="checkbox" checked value="${d.filename}" onclick="onItemChecked(this)" /> ${d.label}`;
       }
-      return `<input type="checkbox" value="${d.dir}" onclick="onItemChecked(this)" /> ${d.label}`;
+      return `<input type="checkbox" value="${d.filename}" onclick="onItemChecked(this)" /> ${d.label}`;
     })
     ;
 
