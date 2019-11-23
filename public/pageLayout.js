@@ -72,6 +72,7 @@ let days = [
 ];
 
 function pageInit() {
+
   var itemSelection = d3.select("#mySidebar").selectAll("label").data(itemList);
   itemSelection.enter()
     .append("label")
@@ -85,87 +86,7 @@ function pageInit() {
     })
     ;
 
-  let calendar = d3.select("#calendar").selectAll("svg").selectAll("g").selectAll("rect").data(days).enter().append("g");
-
-    calendar.append("rect").attr("width", "5%").attr("height", "45%").style("fill", "#8D230F")
-        .on("click", function () {
-            console.log(d3.select(this)["_groups"][0][0]["className"]["baseVal"]);
-            if(d3.select(this)["_groups"][0][0]["className"]["baseVal"] === "rectSelected"){
-                console.log("found class");
-                d3.select(this).attr("class", "");
-            }else{
-                console.log("no class");
-                d3.select(this).attr("class", "rectSelected");
-            }
-        })
-        .on("mouseover", function () {
-            d3.select(this).style("fill", "#af6557");
-            d3.select(this).style("cursor", "pointer");
-        })
-        .on("mouseout", function () {
-            d3.select(this).style("fill", "#8D230F");
-            d3.select(this).style("cursor", "default");
-        })
-
-    ;
-
-  let rec = calendar
-      .append("rect")
-      .attr("width", "12.5%")
-      .attr("height", "45%")
-      .attr("x", function (d, i) {
-        return (((13 * i) + .5 + 5) + "%");
-      })
-      .attr("day", function (d) {
-          return d.name;
-      })
-      .style("fill", "#8D230F")
-      .on("click", function () {
-          console.log(d3.select(this)["_groups"][0][0]["className"]["baseVal"]);
-          if(d3.select(this)["_groups"][0][0]["className"]["baseVal"] === "rectSelected"){
-              console.log("found class");
-              d3.select(this).attr("class", "");
-          }else{
-              console.log("no class");
-              d3.select(this).attr("class", "rectSelected");
-          }
-      })
-      .on("mouseover", function () {
-        d3.select(this).style("fill", "#af6557");
-        d3.select(this).style("cursor", "pointer");
-      })
-      .on("mouseout", function () {
-        d3.select(this).style("fill", "#8D230F");
-        d3.select(this).style("cursor", "default");
-      })
-  ;
-    calendar.append("text").text(function (d) {
-      if(typeof d !== 'undefined')
-      {
-          return d.name;
-      }else{
-          return "Week"
-      }
-      })
-      .attr("x", function (d, i) {
-        return (((13 * i) + 7) + "%");
-      })
-      .attr("y","8px")
-  ;
+  drawCalender();
 
   drawInit();
-}
-
-function openNav() {
-  document.getElementById("mySidebar").style.width = "250px";
-  document.getElementById("main").style.marginLeft = "250px";
-  document.getElementById("main").style.visibility = "hidden";
-  document.getElementById("content").style.marginLeft = "250px";
-}
-
-function closeNav() {
-  document.getElementById("mySidebar").style.width = "0";
-  document.getElementById("main").style.marginLeft= "0";
-  document.getElementById("content").style.marginLeft = "0";
-  document.getElementById("main").style.visibility = "visible";
 }

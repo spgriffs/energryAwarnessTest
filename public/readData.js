@@ -120,7 +120,6 @@ function createNewDatasetObject(dateStr, optDate = null) {
      Breadcutter: startVal,
      CdPlayer: startVal,
      Charger: startVal,
-     Charger: startVal,
      Coffeemaker: startVal,
      Cookingstove: startVal,
      DigitalTvReceiver: startVal,

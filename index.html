@@ -13,6 +13,8 @@
     <script type="text/javascript" src="./public/readData.js"></script>
     <script type="text/javascript" src="./public/pageLayout.js"></script>
     <script type="text/javascript" src="./public/draw.js"></script>
+    <script type="text/javascript" src="./public/sideBar.js"></script>
+    <script type="text/javascript" src="./public/calendar.js"></script>
 
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
@@ -22,10 +24,11 @@
     <title>Energy Awareness</title>
 </head>
 
+
 <body onload="pageInit()">
 
     <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">Close</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="close()">Close</a>
     </div>
 
     <div id="content">
@@ -60,11 +63,18 @@
         <div id="area-chart">
             <svg id="areaChartSvg"></svg>
         </div>
+        <div id="stacked-bar">
+            <svg id="stackedBarSvg">
+                <g>
+                    <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+                </g>
+            </svg>
+        </div>
     </div>
 
     <!--This must be below all content as the button is not clickable otherwise-->
     <div id="main">
-        <button class="openbtn" onclick="openNav()">Data Selection</button>
+        <button class="openbtn" onclick="open()">Data Selection</button>
     </div>
 
     <div class="topnav">
