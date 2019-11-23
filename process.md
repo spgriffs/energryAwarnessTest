@@ -23,7 +23,16 @@ When we found the Tacebase dataset on appliance power usage, we pictured it's us
 
 ----
 
-## Project Objectives ##
+## Related Work ##
+
+Nobody likes paying a big electric bill. Expenses can fluctuate throughout the year depending on energy needs. Related work in the past traditionally has been done using meter hardware and detailed reports from the electric companies. 
+Typical Energy Report:
+
+![Power bill report](./images/electric_bill-450x350.png)
+
+----
+
+## Questions ##
 
 ### Primary Questions - what we want to learn
  1.  What item(s) have the greatest impact on power consumption?
@@ -82,13 +91,43 @@ Link: https://github.com/areinhardt/tracebase/tree/master/complete
 
 ----
 
-## Data Processing ##
+### Data Processing ###
 
 The Tracebase dataset is stored in a number of CSV files. The size of each file can be up to 5-35 Megabytes. To get the data we will need to parse each CSV file. This process can be expensive computationally with a large number of files. We plan on combining this data into a single csv file for each appliance to save on file read times. To avoid processing all the files at once we plan to take a lazy evaluation approach and load only the files dealing with the items selected by the user. This should make the vis dynamic and responsive upon load. From the data we can extract the power consumption values, their averages and the time stamps for the recording. The implementation of the data processing will begin with CSV file access via a python server. Once the file data is returned it will then be placed in the dataset category. All the data we will potentially be processing will be stored on disk in the project workspace.
 
 ----
 
-## Visualization Design ##
+## Exploratory Data Analysis ##
+
+Throughout the design process a number of visualizations where considered.
+
+### Area Chart:
+
+![area chart](./images/area_chart.png)
+ - An area chart was found to fit nicely with the data so that local and global trends could be analyzed easily
+
+### Calendar Heatmap :
+
+![heat map](./images/calendar_heat_map.png)
+ - As a way to abstract the data we considered a calendar heat map. This idea was favorable since it provides a good overview of the data and could be made to be an interactive visualization.
+
+### Steam Chart:
+
+ ![steam chart](./images/steam_chart.png)
+ - A steam chart was considered but was less favorable than the area chart
+
+### Bubble Chart: 
+
+![bubble chart](./images/bubble_chart.png)
+ - It was decided that we wouldn't use the bubble chart since it would be redundant if an area chart was used.
+
+### Stacked Bar Chart:
+
+![stacked chart](./images/stacked_bar_chart.png)
+ - We explored the idea of using a stacked bar chart to provide a detailed summary of the selected data. 
+
+----
+## Design Evolution ##
 
 ### Calendar view ###
 This view gives an overview of the time series data for the selected appliances. Each day of the month will be represented with a rectangle whose color will be based on the total usage for that day for each appliance selected. Darker for more usage, lighter for less. This visualization is the link between the other visualizations. The user will be able to select days or weeks of the month in which they are interested, each selection will update the other visualizations.
