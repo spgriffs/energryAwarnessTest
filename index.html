@@ -28,7 +28,7 @@
 <body onload="pageInit()">
 
     <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="close()">Close</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">Close</a>
     </div>
 
     <div id="content">
@@ -61,6 +61,7 @@
             </svg>
         </div>
         <div id="area-chart">
+            <h2>Power Usage Overview</h2>
             <svg id="areaChartSvg"></svg>
         </div>
         <div id="stacked-bar">
@@ -74,7 +75,7 @@
 
     <!--This must be below all content as the button is not clickable otherwise-->
     <div id="main">
-        <button class="openbtn" onclick="open()">Data Selection</button>
+        <button class="openbtn" onclick="openNav()">Data Selection</button>
     </div>
 
     <div class="topnav">
