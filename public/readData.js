@@ -7,8 +7,11 @@ python -m SimpleHTTPServer
 python -m http.server
 */
 
-// global dataset
-let g_dataset = {};
+let fileDataSet = {}
+
+// global dataset of records ordered by date of recording
+// [ {date: Alarmclock:, CoffeeMaker: ... key3: , key4 ...} ]
+let g_dataset = [];
 
 let areaChartId = "area-chart";
 
@@ -19,6 +22,7 @@ Date.prototype.addHours = function(h){
 
 function onItemChecked(item){
   console.log("checked:" + item.value + " - reading in data...");
+  setItemSelectStatus(item.value, item.checked);
   if (item.checked) {
     readInDataItem(item.value, onDataUpdate, areaChartId);
   } else {
@@ -48,13 +52,13 @@ function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
   // values for each interval
   var curDate = new Date(valuesArray[0].date.getTime());
   var hoursResRecords = [];
-  curDate.addHours(1);
+  curDate.addHours(numHours);
   var sumObj = createNewDatasetObject("", curDate);
   _.each(valuesArray, function(secondResRecord) {
     if (secondResRecord.date > curDate) {
       // update hour record
       hoursResRecords.push(sumObj);
-      curDate.addHours(1);
+      curDate.addHours(numHours);
       sumObj = createNewDatasetObject("", curDate);
     }
     // otherwise add the record values
@@ -70,13 +74,35 @@ function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
 }
 
 function getStartAndEndDates() {
-  var keys = _.keys(g_dataset);
   var startDate = new Date();
   var endDate = new Date();
-  if (keys.length > 0) {
-   startDate = getDateObj(keys[0]);
-   endDate = getDateObj(keys[keys.length -1]);
-  }
+  // get the date of the first and last selected item
+  // that has value
+  // if (g_dataset.length > 0) {
+  //  startDate = g_dataset[0].date;
+  //  endDate = g_dataset[g_dataset.length -1].date;
+  // }
+
+  // all keys are the same for each record
+  var keys = _.keys(g_dataset[0]).splice(1); // all keys except the date key
+  var findFunction = function (record) {
+    var rslt = false;
+    _.each(keys, function (key) {
+      if (record[key] > 0 && isItemSelected(key)) {
+        rslt = true;
+      }
+    });
+    if (rslt) return true;
+  };
+
+  // start date search
+  var foundStartRec = _.find(g_dataset, findFunction);
+  if (foundStartRec) startDate = foundStartRec.date;
+  // end date search
+  var foundEndRec =  _.find(_.reverse(g_dataset), findFunction);
+  if (foundEndRec) endDate = foundEndRec.date;
+  // return the dataset to correct order
+  _.reverse(g_dataset);
   return {
     start: startDate,
     end: endDate,
@@ -90,11 +116,12 @@ function readInDataItem(itemName, onNewDataCallback, optElementId = undefined){
   d3.csv(`compressedData/${itemName}.csv`).then(function (fileData){
     _.each(fileData, function(row) {
       var str1 = row[_.keys(row)[0]].split(";");
-      if (!g_dataset[str1[0]]) {
-        g_dataset[str1[0]] = createNewDatasetObject(str1[0]);
+      if (!fileDataSet[str1[0]]) {
+        fileDataSet[str1[0]] = createNewDatasetObject(str1[0]);
       }
-      g_dataset[str1[0]][itemName] = parseInt(str1[2]);
+      fileDataSet[str1[0]][itemName] = parseInt(str1[2]);
     });
+    g_dataset = _.values(fileDataSet);
     setItemLoadStatus(itemName, 2); // loaded
     onNewDataCallback(itemName);
   });
@@ -102,60 +129,16 @@ function readInDataItem(itemName, onNewDataCallback, optElementId = undefined){
 
 function setAsUnselected(itemName, onUnselectedCallback) {
   // TODO remove the data from the dataset
-  // g_dataset[itemName].selected = false;
   onUnselectedCallback(itemName);
 }
 
 function createNewDatasetObject(dateStr, optDate = null) {
-  // just some data for a proof of concept
-  // var startVal = 4 + Math.round((2 * Math.random()));
   var startVal = 0;
-  // Uncomment the following lines this is just
-  // for testing purposes
-  return {
-     date: optDate ? new Date(optDate.getTime()) : getDateObj(dateStr),
-     Alarmclock: startVal,
-     Amplifier: startVal,
-     BeanToCupCoffeemaker: startVal,
-     Breadcutter: startVal,
-     CdPlayer: startVal,
-     Charger_PSP: startVal,
-     Charger_Smartphone: startVal,
-     Coffeemaker: startVal,
-     Cookingstove: startVal,
-     DigitalTvReceiver: startVal,
-     Dishwasher: startVal,
-     DvdPlayer: startVal,
-     EthernetSwitch: startVal,
-     Freezer: startVal,
-     Iron: startVal,
-     Lamp: startVal,
-    //  LaundryDryer: startVal,
-    //  MicrowaveOven: startVal,
-     Monitor_CRT: startVal,
-    //  Monitor_TFT: startVal,
-     Multimediacenter: startVal,
-    //  PC_Desktop: startVal,
-    //  PC_Laptop: startVal,
-     Playstation3: startVal,
-    //  Printer: startVal,
-    //  Projector: startVal,
-    //  Refrigerator: startVal,
-    //  RemoteDesktop: startVal,
-    //  Router: startVal,
-    //  SolarThermalSystem: startVal,
-    //  Subwoofer: startVal,
-    //  Toaster: startVal,
-    //  TV-CRT: startVal,
-    //  TV-LCD: startVal,
-    //  USBHarddrive: startVal,
-    //  USBHub: startVal,
-    //  VacuumCleaner: startVal,
-    //  VideoProjector: startVal,
-    //  Washingmachine: startVal,
-    //  WaterBoiler: startVal,
-    //  WaterFountain: startVal,
-    //  WaterKettle: startVal,
-    //  XmasLights: startVal,
-  };
+  // return a record object having a default value for each item
+  // in the items list
+  var record = {date: optDate ? new Date(optDate.getTime()) : getDateObj(dateStr)};
+  _.each(g_itemList, function (item) {
+    record[item.filename] = startVal;
+  });
+  return record;
 }

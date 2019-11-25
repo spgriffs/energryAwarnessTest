@@ -29,7 +29,7 @@ var area = d3.area()
 
 // color palette
 var chartColorScale = d3.scaleOrdinal()
-.domain(_.map(itemList, "filename"))
+.domain(_.map(g_itemList, "filename"))
 .range(_.concat(d3.schemeTableau10, d3.schemeCategory10));
 // .range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf'])
 // ;
@@ -86,10 +86,8 @@ function rescaleXAxis() {
 function onDataUpdate(listName) {
   // rescale the chart to the new dates
   rescaleXAxis();
-  // var values = _.values(g_dataset);
-  var values = _.values(g_dataset);
-  var keys = _.keys(values[0]).slice(1);
-  var hourResValues = getDataWithHourResolution(keys, values, 12);
+  var keys = _.keys(g_dataset[0]).slice(1);
+  var hourResValues = getDataWithHourResolution(keys, g_dataset, 12);
   console.log(listName + " has new data has been loaded and is ready to draw");
   var series = d3.stack().keys(keys)(hourResValues);
   chartLayers.selectAll("path")

@@ -25,7 +25,7 @@ When we found the Tacebase dataset on appliance power usage, we pictured it's us
 
 ## Related Work ##
 
-Nobody likes paying a big electric bill. Expenses can fluctuate throughout the year depending on energy needs. Related work in the past traditionally has been done using meter hardware and detailed reports from the electric companies. 
+Nobody likes paying a big electric bill. Expenses can fluctuate throughout the year depending on energy needs. Related work in the past traditionally has been done using meter hardware and detailed reports from the electric companies.
 Typical Energy Report:
 
 ![Power bill report](./images/electric_bill-450x350.png)
@@ -116,7 +116,7 @@ Throughout the design process a number of visualizations where considered.
  ![steam chart](./images/steam_chart.png)
  - A steam chart was considered but was less favorable than the area chart
 
-### Bubble Chart: 
+### Bubble Chart:
 
 ![bubble chart](./images/bubble_chart.png)
  - It was decided that we wouldn't use the bubble chart since it would be redundant if an area chart was used.
@@ -124,7 +124,7 @@ Throughout the design process a number of visualizations where considered.
 ### Stacked Bar Chart:
 
 ![stacked chart](./images/stacked_bar_chart.png)
- - We explored the idea of using a stacked bar chart to provide a detailed summary of the selected data. 
+ - We explored the idea of using a stacked bar chart to provide a detailed summary of the selected data.
 
 ----
 ## Design Evolution ##
