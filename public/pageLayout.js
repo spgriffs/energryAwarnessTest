@@ -20,7 +20,7 @@ let g_itemList = [
   { label: "Iron", filename: "Iron", loadOnStart: false, loadStatus: 0, selected: false },
   { label: "Lamp", filename: "Lamp", loadOnStart: false, loadStatus: 0, selected: false },
   // { label: "Laundry Dryer", filename: "LaundryDryer", loadOnStart: false, loadStatus: 0, selected: false },
-  // { label: "Microwave Oven", filename: "MicrowaveOven", loadOnStart: false, loadStatus: 0, selected: false },
+  { label: "Microwave Oven", filename: "MicrowaveOven", loadOnStart: false, loadStatus: 0, selected: false },
   { label: "Monitor CRT", filename: "Monitor_CRT", loadOnStart: false, loadStatus: 0, selected: false },
   // { label: "Monitor TFT", filename: "Monitor-TFT", loadOnStart: false, loadStatus: 0, selected: false },
   { label: "Multi-media Center", filename: "Multimediacenter", loadOnStart: false, loadStatus: 0, selected: false },
