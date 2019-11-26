@@ -35,7 +35,7 @@ var chartColorScale = d3.scaleOrdinal()
 // ;
 
 
-function drawInit() {
+function drawAreaChartInit() {
   chartSvg = d3.select('#areaChartSvg')
   .attr("width", chartWidth + chartMargin.left + chartMargin.right)
   .attr("height", chartHeight + chartMargin.top + chartMargin.bottom)
@@ -83,12 +83,12 @@ function rescaleXAxis() {
 //       ;
 // }
 
-function onDataUpdate(listName) {
+function updateAreaChart(itemName) {
   // rescale the chart to the new dates
   rescaleXAxis();
-  var keys = _.keys(g_dataset[0]).slice(1);
+  var keys = _.keys(g_dataset[0]).slice(1); // all keys besides the date
   var hourResValues = getDataWithHourResolution(keys, g_dataset, 12);
-  console.log(listName + " has new data has been loaded and is ready to draw");
+  console.log(itemName + " has new data has been loaded and is ready to draw");
   var series = d3.stack().keys(keys)(hourResValues);
   chartLayers.selectAll("path")
     .data(series)
@@ -100,11 +100,11 @@ function onDataUpdate(listName) {
   stopSpinner();
 }
 
-function onDataUnselected(listName) {
-  console.log(listName + " has been unselected");
-  // TODO update the vis by removing all unselected data
+// function onDataUnselected(itemName) {
+//   console.log(itemName + " has been unselected");
+//   // TODO update the vis by removing all unselected data
 
-  // rescale the chart to the new dates
-  rescaleXAxis();
+//   // rescale the chart to the new dates
+//   rescaleXAxis();
 
-}
+// }

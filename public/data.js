@@ -20,17 +20,6 @@ Date.prototype.addHours = function(h){
   return this;
 }
 
-function onItemChecked(item){
-  console.log("checked:" + item.value + " - reading in data...");
-  setItemSelectStatus(item.value, item.checked);
-  if (item.checked) {
-    readInDataItem(item.value, onDataUpdate, areaChartId);
-  } else {
-    setAsUnselected(item.value, onDataUnselected);
-  }
-  // console.log("got here");
-}
-
 function getDateObj(str) {
   var dateStr = str.split(" ");
   var dateArray = dateStr[0].split("/");
@@ -53,13 +42,13 @@ function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
   var curDate = new Date(valuesArray[0].date.getTime());
   var hoursResRecords = [];
   curDate.addHours(numHours);
-  var sumObj = createNewDatasetObject("", curDate);
+  var sumObj = createNewDatasetRecord("", curDate);
   _.each(valuesArray, function(secondResRecord) {
     if (secondResRecord.date > curDate) {
       // update hour record
       hoursResRecords.push(sumObj);
       curDate.addHours(numHours);
-      sumObj = createNewDatasetObject("", curDate);
+      sumObj = createNewDatasetRecord("", curDate);
     }
     // otherwise add the record values
     _.each(keys, function(key) {
@@ -115,12 +104,14 @@ function readInDataItem(itemName, onNewDataCallback, optElementId = undefined){
   setItemLoadStatus(itemName, 1); // loading
   d3.csv(`compressedData/${itemName}.csv`).then(function (fileData){
     _.each(fileData, function(row) {
+      // "12/1/2012 00:00:03;2;3"
       var str1 = row[_.keys(row)[0]].split(";");
       if (!fileDataSet[str1[0]]) {
-        fileDataSet[str1[0]] = createNewDatasetObject(str1[0]);
+        fileDataSet[str1[0]] = createNewDatasetRecord(str1[0]);
       }
       fileDataSet[str1[0]][itemName] = parseInt(str1[2]);
     });
+    // [ {date: Alarmclock:#, CoffeeMaker:# ... key3: , key4 ...} ]
     g_dataset = _.values(fileDataSet);
     setItemLoadStatus(itemName, 2); // loaded
     onNewDataCallback(itemName);
@@ -132,7 +123,7 @@ function setAsUnselected(itemName, onUnselectedCallback) {
   onUnselectedCallback(itemName);
 }
 
-function createNewDatasetObject(dateStr, optDate = null) {
+function createNewDatasetRecord(dateStr, optDate = null) {
   var startVal = 0;
   // return a record object having a default value for each item
   // in the items list
@@ -142,3 +133,12 @@ function createNewDatasetObject(dateStr, optDate = null) {
   });
   return record;
 }
+
+/* date is unique
+Data is ordered
+[
+ oldest 2011 {date: javascript date obj ,a:10, b:#},
+  {....},
+ newest 2012 {....}
+]
+*/

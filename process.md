@@ -154,6 +154,10 @@ In the final design we plan to have the user interact with the calendar view to 
 
 ----
 
+## Implementation ##
+
+---- 
+
 ## Project Schedule ##
 
 ### Week 1:
