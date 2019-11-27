@@ -83,12 +83,12 @@ function rescaleXAxis() {
 //       ;
 // }
 
-function updateAreaChart(itemName) {
+function updateAreaChart() {
   // rescale the chart to the new dates
   rescaleXAxis();
   var keys = _.keys(g_dataset[0]).slice(1); // all keys besides the date
-  var hourResValues = getDataWithHourResolution(keys, g_dataset, 12);
-  console.log(itemName + " has new data has been loaded and is ready to draw");
+  var hourResValues = getDataWithHourResolution(keys, g_dataset, 1);
+  console.log("New item has new data has been loaded and is ready to draw");
   var series = d3.stack().keys(keys)(hourResValues);
   chartLayers.selectAll("path")
     .data(series)

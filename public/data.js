@@ -21,7 +21,13 @@ Date.prototype.addHours = function(h){
 }
 
 function getDateObj(str) {
+  if (str === "") return new Date();
   var dateStr = str.split(" ");
+  if (!dateStr[0] || !dateStr[1]) {
+    // throw "Invalid date";
+    console.log("date str empty");
+    return new Date();
+  }
   var dateArray = dateStr[0].split("/");
   var timeArray = dateStr[1].split(":");
   // new Date(year, month, day, hours, minutes, seconds, milliseconds);
@@ -52,6 +58,9 @@ function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
     }
     // otherwise add the record values
     _.each(keys, function(key) {
+      if(_.isNaN(secondResRecord[key])) {
+        throw "NaN value discovered!!";
+      }
       sumObj[key] += secondResRecord[key];
     })
   });
@@ -105,11 +114,14 @@ function readInDataItem(itemName, onNewDataCallback, optElementId = undefined){
   d3.csv(`compressedData/${itemName}.csv`).then(function (fileData){
     _.each(fileData, function(row) {
       // "12/1/2012 00:00:03;2;3"
-      var str1 = row[_.keys(row)[0]].split(";");
-      if (!fileDataSet[str1[0]]) {
-        fileDataSet[str1[0]] = createNewDatasetRecord(str1[0]);
+      var valStr = row[_.keys(row)[0]];
+      if (valStr !== "") {
+        var str1 = valStr.split(";");
+        if (!fileDataSet[str1[0]]) {
+          fileDataSet[str1[0]] = createNewDatasetRecord(str1[0]);
+        }
+        fileDataSet[str1[0]][itemName] = parseInt(str1[2]);
       }
-      fileDataSet[str1[0]][itemName] = parseInt(str1[2]);
     });
     // [ {date: Alarmclock:#, CoffeeMaker:# ... key3: , key4 ...} ]
     g_dataset = _.values(fileDataSet);
