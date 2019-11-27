@@ -9,10 +9,33 @@ let days = [
     {name: "Saturday", value: "100"}
 ];
 
+let test = {
+    "946721039":1,
+    "946706853":1,
+    "946706340":1
+}
 function drawCalender(){
     var cal = new CalHeatMap();
-	cal.init({});
-    
+    cal.init({
+        itemSelector: "#calendar",
+        domain: "month",
+        subDomain: "x_day",
+        data: "datas-years.json",
+        start: new Date(2000, 0, 5),
+        cellSize: 20,
+        cellPadding: 5,
+        domainGutter: 20,
+        range: 20,
+        domainDynamicDimension: true,
+        //previousSelector: "#example-g-PreviousDomain-selector",
+        //nextSelector: "#example-g-NextDomain-selector",
+        //domainLabelFormat: function(date) {
+        //    moment.lang("en");
+        //    return moment(date).format("MMMM").toUpperCase();
+        //},
+        subDomainTextFormat: "%d",
+        legend: [20, 40, 60, 80]
+    });
     // let calendar = d3.select("#calendar").selectAll("svg").selectAll("g").selectAll("rect").data(days).enter().append("g");
 
     // calendar.append("rect").attr("width", "5%").attr("height", "45%").style("fill", "#8D230F")
