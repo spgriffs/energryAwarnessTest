@@ -9,15 +9,10 @@ let days = [
     {name: "Saturday", value: "100"}
 ];
 
-let test = {
-    "946721039":1,
-    "946706853":1,
-    "946706340":1
-}
 function drawCalender(){
     var cal = new CalHeatMap();
     cal.init({
-        itemSelector: "#calendar",
+        itemSelector: "#cal-heatmap",
         domain: "month",
         subDomain: "x_day",
         data: "datas-years.json",
