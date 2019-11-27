@@ -21,7 +21,7 @@ let g_itemList = [
     // { label: "Laundry Dryer", filename: "LaundryDryer", loadOnStart: false, loadStatus: 0, selected: false },
     // { label: "Microwave Oven", filename: "MicrowaveOven", loadOnStart: false, loadStatus: 0, selected: false },
     { label: "Monitor CRT", filename: "Monitor_CRT", loadOnStart: false, loadStatus: 0, selected: false },
-    // { label: "Monitor TFT", filename: "Monitor-TFT", loadOnStart: false, loadStatus: 0, selected: false },
+    // { label: "Monitor TFT", filename: "Monitor_TFT", loadOnStart: false, loadStatus: 0, selected: false },
     { label: "Multi-media Center", filename: "Multimediacenter", loadOnStart: false, loadStatus: 0, selected: false },
     // { label: "PC Desktop", filename: "PC_Desktop", loadOnStart: false, loadStatus: 0, selected: false },
     // { label: "PC Laptop", filename: "PC_Laptop", loadOnStart: false, loadStatus: 0, selected: false },

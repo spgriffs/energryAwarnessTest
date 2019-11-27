@@ -156,7 +156,14 @@ In the final design we plan to have the user interact with the calendar view to 
 
 ## Implementation ##
 
----- 
+* We found a great calendar map library that will be useful in our application. It has the same look and feel as the calendar map that github uses on its profile pages.
+
+* After some thought it was determined that the only useful file data are the rows that have non-zero power usage levels. About 30 - 40% of each of the data files are recording when the power usage is zero. We can improve performance significantly by removing the rows that are zero for power usage.
+
+----
+
+## Evaluation ##
+
 
 ## Project Schedule ##
 
