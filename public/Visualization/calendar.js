@@ -60,4 +60,11 @@ function drawCalender(){
         subDomainTextFormat: "%d",
         legend: [20, 40, 60, 80]
     });
+    // extent(padding[bottom, top], )
+    let brush = d3.brushX().extent([[30, 0],[cal.graphDim.width, cal.graphDim.height]]).on("end", () => {
+        // TODO implement to update the data
+        console.log("brush end");
+  });
+
+  cal.root.append("g").attr("class", "brush").call(brush);
 }

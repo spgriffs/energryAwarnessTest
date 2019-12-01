@@ -4,6 +4,10 @@ body {
   font-family: "Lato", sans-serif;
 }
 
+.brush .selection {
+  fill-opacity: .5;
+}
+
 .sidebar {
   height: 80%;
   width: 0;
