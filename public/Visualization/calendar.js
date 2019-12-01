@@ -27,25 +27,31 @@ function updateCalDataSet(){
     let dayta = getDataWithDayResolution();
     console.log(dayta);
     console.log("start");
-    cal_dataSet += "{\n";
+    cal_dataSet = [];
     for(let i in dayta){
-        cal_dataSet += dayta[i]['date'].valueOf() + ": ";
-        cal_dataSet += sumAllActiveData(dayta[i]) + "\n";
+        let day = {};
+        day.date = Math.round(dayta[i]['date']()/1000);
+        day.value = sumAllActiveData(dayta[i]);
+        cal_dataSet.push(day);
+        //cal_dataSet += dayta[i]['date'].valueOf() + ": ";
+        //cal_dataSet += sumAllActiveData(dayta[i]) + "\n";
     }
-    cal_dataSet += "}";
     //console.log(g_dataset);
+    console.log("cal_dataSet :)");
     console.log(cal_dataSet);
+    var temp = new Date("12/1/2019");
+    console.log(temp.getTime());
 
 }
 function drawCalender(){
 
-    //updateCalDataSet();
+    updateCalDataSet();
     cal.init({
         itemSelector: "#cal-heatmap",
         domain: "month",
         subDomain: "x_day",
         start: new Date(2010, 0, 5),
-        data: "datas-years.json",
+        data: cal_dataSet,
         cellSize: 20,
         cellPadding: 5,
         domainGutter: 20,
