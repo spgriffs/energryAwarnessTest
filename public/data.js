@@ -7,7 +7,7 @@ python -m SimpleHTTPServer
 python -m http.server
 */
 
-let fileDataSet = {}
+let fileDataSet = {};
 
 // global dataset of records ordered by date of recording
 // [ {date: Alarmclock:, CoffeeMaker: ... key3: , key4 ...} ]
@@ -18,7 +18,7 @@ let areaChartId = "area-chart";
 Date.prototype.addHours = function(h){
   this.setHours(this.getHours()+h);
   return this;
-}
+};
 
 function getDateObj(str) {
   if (str === "") return new Date();
@@ -40,12 +40,20 @@ function getDateObj(str) {
     parseInt(timeArray[2]));
 }
 
+function getDataWithDayResolution(){
+  let dayKeys = _.keys(g_dataset[0]).slice(1); // all keys besides the date
+  return getDataWithHourResolution(dayKeys, g_dataset, 24);
+}
+
 // returns the data vales array
 // with hour sum intervals
 function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
   // go to the next interval and sum all of the
   // values for each interval
-  var curDate = new Date(valuesArray[0].date.getTime());
+  console.log("valuesArray");
+  console.log(valuesArray);
+
+  var curDate = new Date(valuesArray[0].date.getTime()); // current date
   var hoursResRecords = [];
   curDate.addHours(numHours);
   var sumObj = createNewDatasetRecord("", curDate);
@@ -68,6 +76,8 @@ function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
   // add the final sum object for the last hour
   hoursResRecords.push(sumObj);
 
+  console.log("HOURS");
+  console.log(hoursResRecords);
   return hoursResRecords;
 }
 

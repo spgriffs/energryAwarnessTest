@@ -17,7 +17,7 @@ function isItemSelected(filename) {
 function onUpdate() {
   // when new data is selected
   updateAreaChart();
-  // updateCalendarChart()
+  //updateCalendar()
   // updateBarChart()
 }
 
@@ -31,7 +31,9 @@ function onItemChecked(item){
     // setAsUnselected(item.value, onDataUnselected);
     setAsUnselected(item.value, onUpdate);
   }
-  // console.log("got here");
+  console.log("got here");
+  //updateCalendar();
+  //updateAreaChart();
 }
 
 function setItemSelectStatus(filename, status) {
@@ -70,6 +72,7 @@ function pageInit() {
     })
     ;
 
-  drawCalender();
   drawAreaChartInit();
+  drawCalender();
+
 }

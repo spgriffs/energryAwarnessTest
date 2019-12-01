@@ -2,7 +2,7 @@
 // load status [0 - not loaded, 1 - loading, 2 - loaded and read]
 // global item status list
 let g_itemList = [
-    { label: "Alarmclock", filename: "Alarmclock", loadOnStart: false, loadStatus: 0, selected: false },
+    { label: "Alarmclock", filename: "Alarmclock", loadOnStart: true, loadStatus: 0, selected: false },
     { label: "Amplifier", filename: "Amplifier", loadOnStart: false, loadStatus: 0, selected: false },
     { label: "Bean To Cup Coffee Maker", filename: "BeanToCupCoffeemaker", loadOnStart: false, loadStatus: 0, selected: false },
     { label: "Bread Cutter", filename: "Breadcutter", loadOnStart: false, loadStatus: 0, selected: false },
