@@ -36,6 +36,8 @@ var chartColorScale = d3.scaleOrdinal()
 
 
 function drawAreaChartInit() {
+  d3.select('#area-chart').style("visibility", "hidden");
+
   chartSvg = d3.select('#areaChartSvg')
   .attr("width", chartWidth + chartMargin.left + chartMargin.right)
   .attr("height", chartHeight + chartMargin.top + chartMargin.bottom)
@@ -57,10 +59,10 @@ function drawAreaChartInit() {
   .call(d3.axisLeft(yChartScale));
 }
 
-function rescaleXAxis() {
-  var dateSpan = getStartAndEndDates();
+function rescaleXAxis(startDate, endDate) {
+  // var dateSpan = getStartAndEndDates();
   xChartScale = d3.scaleTime()
-    .domain([dateSpan.start, dateSpan.end])
+    .domain([startDate, endDate])
     .nice(d3.timeWeek)
     .range([0, chartWidth]);
   xChartAxis.transition().duration(1000).call(d3.axisBottom(xChartScale));
@@ -83,12 +85,15 @@ function rescaleXAxis() {
 //       ;
 // }
 
-function updateAreaChart() {
+function updateAreaChart(startDate, endDate) {
+  // show the area chart
+  d3.select('#area-chart').style("visibility", "unset");
+  
   // rescale the chart to the new dates
-  rescaleXAxis();
+  rescaleXAxis(startDate, endDate);
+  // TODO performance: only select the date between the start and end dates
   var keys = _.keys(g_dataset[0]).slice(1); // all keys besides the date
   var hourResValues = getDataWithHourResolution(keys, g_dataset, 1);
-  console.log("New item has new data has been loaded and is ready to draw");
   var series = d3.stack().keys(keys)(hourResValues);
   chartLayers.selectAll("path")
     .data(series)
@@ -97,7 +102,6 @@ function updateAreaChart() {
       .attr("d", area)
     .append("title")
       .text(({key}) => key);
-  stopSpinner();
 }
 
 // function onDataUnselected(itemName) {

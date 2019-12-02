@@ -20,6 +20,15 @@ Date.prototype.addHours = function(h){
   return this;
 };
 
+function loadSelectedItems() {
+  // only load the selected items on close
+  _.each(g_itemList, function (item) {
+    if (item.selected) {
+      readInDataItem(item.filename, onUpdate); //, areaChartId);
+    }
+  });
+}
+
 function getDateObj(str) {
   if (str === "") return new Date();
   var dateStr = str.split(" ");
@@ -48,10 +57,7 @@ function getDataWithDayResolution(){
 // returns the data vales array
 // with hour sum intervals
 function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
-  // go to the next interval and sum all of the
-  // values for each interval
-  console.log("valuesArray");
-  console.log(valuesArray);
+  if (valuesArray.length === 0) return [];
 
   var curDate = new Date(valuesArray[0].date.getTime()); // current date
   var hoursResRecords = [];
@@ -76,8 +82,8 @@ function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
   // add the final sum object for the last hour
   hoursResRecords.push(sumObj);
 
-  console.log("HOURS");
-  console.log(hoursResRecords);
+  // console.log("HOURS");
+  // console.log(hoursResRecords);
   return hoursResRecords;
 }
 
@@ -118,7 +124,7 @@ function getStartAndEndDates() {
 }
 
 function readInDataItem(itemName, onNewDataCallback, optElementId = undefined){
-  if (optElementId) startSpinner(optElementId);
+  // if (optElementId) startSpinner(optElementId);
   if (getItemLoadStatus(itemName) > 0) return;
   setItemLoadStatus(itemName, 1); // loading
   d3.csv(`compressedData/${itemName}.csv`).then(function (fileData){
@@ -127,22 +133,20 @@ function readInDataItem(itemName, onNewDataCallback, optElementId = undefined){
       var valStr = row[_.keys(row)[0]];
       if (valStr !== "") {
         var str1 = valStr.split(";");
-        if (!fileDataSet[str1[0]]) {
-          fileDataSet[str1[0]] = createNewDatasetRecord(str1[0]);
+        if (str1[0] && str1[0] !== " ") {
+          if (!fileDataSet[str1[0]]) {
+            fileDataSet[str1[0]] = createNewDatasetRecord(str1[0]);
+          }
+          fileDataSet[str1[0]][itemName] = parseInt(str1[2]);
         }
-        fileDataSet[str1[0]][itemName] = parseInt(str1[2]);
       }
     });
     // [ {date: Alarmclock:#, CoffeeMaker:# ... key3: , key4 ...} ]
-    g_dataset = _.values(fileDataSet);
+    g_dataset = _.sortBy(_.values(fileDataSet), "date");
     setItemLoadStatus(itemName, 2); // loaded
+    // stopSpinner();
     onNewDataCallback(itemName);
   });
-}
-
-function setAsUnselected(itemName, onUnselectedCallback) {
-  // TODO remove the data from the dataset
-  onUnselectedCallback(itemName);
 }
 
 function createNewDatasetRecord(dateStr, optDate = null) {

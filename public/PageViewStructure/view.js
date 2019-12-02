@@ -16,24 +16,13 @@ function isItemSelected(filename) {
 
 function onUpdate() {
   // when new data is selected
-  updateAreaChart();
-  //updateCalendar()
-  // updateBarChart()
+  // updateAreaChart();
+  drawCalender();
 }
 
 function onItemChecked(item){
-  console.log("checked:" + item.value + " - reading in data...");
+  //console.log("checked:" + item.value + " - reading in data...");
   setItemSelectStatus(item.value, item.checked);
-  if (item.checked) {
-    // readInDataItem(item.value, onDataUpdate, areaChartId);
-    readInDataItem(item.value, onUpdate, areaChartId);
-  } else {
-    // setAsUnselected(item.value, onDataUnselected);
-    setAsUnselected(item.value, onUpdate);
-  }
-  console.log("got here");
-  //updateCalendar();
-  //updateAreaChart();
 }
 
 function setItemSelectStatus(filename, status) {
@@ -73,6 +62,6 @@ function pageInit() {
     ;
 
   drawAreaChartInit();
-  drawCalender();
-
+  calendarInit();
+  loadSelectedItems();
 }

@@ -6,71 +6,132 @@
 }
  */
 
-let cal_dataSet = "";
+let cal_dataSet = {};
 let cal = new CalHeatMap();
 
-function sumAllActiveData(data){
-    console.log(data);
-    let sum = 0;
-    for(let i in g_itemList){
-        //console.log(i);
-        //console.log(g_itemList[i]);
-        console.log(data[g_itemList[i]['filename']]);
-        sum += parseInt(data[g_itemList[i]['filename']]);
+let selectedStart = undefined;
+let selectedEnd = undefined;
+
+/******Calendar helper functions ***************/
+
+function onDateClicked(date, count) {
+  d3.select(d3.event.target)
+  .style("stroke", "black")
+  .style("stroke-width", 3);
+  if (selectedStart && selectedEnd) {
+    var diffStart = Math.abs(selectedStart.date - date);
+    var diffEnd = Math.abs(selectedEnd.date - date);
+    // update which ever is closest        
+    if (diffStart < diffEnd) {
+      d3.select(selectedStart.element)
+      .style("stroke-width", 0);
+      selectedStart = {element: d3.event.target, date: date};
+    } else {
+      d3.select(selectedEnd.element)
+      .style("stroke-width", 0);
+      selectedEnd = {element: d3.event.target, date: date};
     }
-    console.log("Sum");
-    console.log(sum);
-    return sum;
+  } else if (selectedStart) {
+    if (date < selectedStart.date){
+      selectedEnd = selectedStart;
+      selectedStart = {element: d3.event.target, date: date};
+    } else {
+      selectedEnd = {element: d3.event.target, date: date};
+    }
+  } else {
+    selectedStart = {element: d3.event.target, date: date};
+  }
+
+  if (selectedStart && selectedEnd) {
+    // debugging only 
+    // console.log("start: " + selectedStart.date.toISOString() + " -> end: " + selectedEnd.date.toISOString());
+    updateAreaChart(selectedStart.date, selectedEnd.date);
+  }
 }
 
-function updateCalDataSet(){
-    let dayta = getDataWithDayResolution();
-    console.log(dayta);
-    console.log("start");
-    cal_dataSet = [];
-    for(let i in dayta){
-        let day = {};
-        day.date = Math.round(dayta[i]['date']()/1000);
-        day.value = sumAllActiveData(dayta[i]);
-        cal_dataSet.push(day);
-        //cal_dataSet += dayta[i]['date'].valueOf() + ": ";
-        //cal_dataSet += sumAllActiveData(dayta[i]) + "\n";
-    }
-    //console.log(g_dataset);
-    console.log("cal_dataSet :)");
-    console.log(cal_dataSet);
-    var temp = new Date("12/1/2019");
-    console.log(temp.getTime());
-
+function sumAllActiveData(data) {
+  // console.log(data);
+  let sum = 0;
+  for (let i in g_itemList) {
+    //console.log(i);
+    //console.log(g_itemList[i]);
+    // console.log(data[g_itemList[i]['filename']]);
+    sum += parseInt(data[g_itemList[i]['filename']]);
+  }
+  // console.log("Sum");
+  // console.log(sum);
+  return sum;
 }
-function drawCalender(){
 
-    updateCalDataSet();
-    cal.init({
-        itemSelector: "#cal-heatmap",
-        domain: "month",
-        subDomain: "x_day",
-        start: new Date(2010, 0, 5),
-        data: cal_dataSet,
-        cellSize: 20,
-        cellPadding: 5,
-        domainGutter: 20,
-        range: 20,
-        domainDynamicDimension: true,
-        //previousSelector: "#example-g-PreviousDomain-selector",
-        //nextSelector: "#example-g-NextDomain-selector",
-        //domainLabelFormat: function(date) {
-        //    moment.lang("en");
-        //    return moment(date).format("MMMM").toUpperCase();
-        //},
-        subDomainTextFormat: "%d",
-        legend: [20, 40, 60, 80]
-    });
-    // extent(padding[bottom, top], )
-    let brush = d3.brushX().extent([[30, 0],[cal.graphDim.width, cal.graphDim.height]]).on("end", () => {
-        // TODO implement to update the data
-        console.log("brush end");
+function updateCalDataSet() {
+  let data = getDataWithDayResolution();
+  // console.log(data);
+  // console.log("start");
+  cal_dataSet = {};
+  _.each(data, function (d) {
+    var dateSeconds = Math.round(d.date.getTime()) / 1000;
+    cal_dataSet[dateSeconds] = sumAllActiveData(d);
+  });
+  // for(let i in data){
+  //     let day = {};
+  //     day.date = Math.round(data[i]['date']()/1000);
+  //     day.value = sumAllActiveData(data[i]);
+  //     cal_dataSet.push(day);
+  //     //cal_dataSet += data[i]['date'].valueOf() + ": ";
+  //     //cal_dataSet += sumAllActiveData(data[i]) + "\n";
+  // }
+  //console.log(g_dataset);
+  // var temp = new Date("12/1/2019");
+  // console.log(temp.getTime());
+}
+
+function calendarInit() {
+  cal.init({
+    itemSelector: "#cal-heatmap",
+    domain: "month",
+    subDomain: "x_day",
+    start: new Date(2011, 0, 5),
+    data: cal_dataSet,
+    cellSize: 20,
+    cellPadding: 5,
+    domainGutter: 20,
+    range: 10,
+    domainDynamicDimension: true,
+    subDomainTextFormat: "%d",
+    legend: [20, 40, 60, 80]
+  });
+}
+
+function drawCalender() {
+  // reset calendar area
+  document.getElementById("cal-heatmap").innerHTML = "";
+  cal = new CalHeatMap();
+
+  updateCalDataSet();
+  var startAndEnd = getStartAndEndDates();
+  var diffTime = Math.abs(startAndEnd.start - startAndEnd.end);
+  var diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30)); 
+  cal.init({
+    itemSelector: "#cal-heatmap",
+    domain: "month",
+    subDomain: "x_day",
+    start: startAndEnd.start,
+    data: cal_dataSet,
+    cellSize: 20,
+    cellPadding: 5,
+    domainGutter: 20,
+    range: diffMonths,
+    domainDynamicDimension: true,
+    //previousSelector: "#example-g-PreviousDomain-selector",
+    //nextSelector: "#example-g-NextDomain-selector",
+    //domainLabelFormat: function(date) {
+    //    moment.lang("en");
+    //    return moment(date).format("MMMM").toUpperCase();
+    //},
+    subDomainTextFormat: "%d",
+    browsing: true,
+    onClick: onDateClicked,
+    legend: [20, 40, 60, 80]
   });
 
-  cal.root.append("g").attr("class", "brush").call(brush);
 }
