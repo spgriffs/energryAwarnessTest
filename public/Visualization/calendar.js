@@ -18,6 +18,7 @@ function onDateClicked(date, count) {
   d3.select(d3.event.target)
   .style("stroke", "black")
   .style("stroke-width", 3);
+
   if (selectedStart && selectedEnd) {
     var diffStart = Math.abs(selectedStart.date - date);
     var diffEnd = Math.abs(selectedEnd.date - date);
@@ -45,8 +46,21 @@ function onDateClicked(date, count) {
   if (selectedStart && selectedEnd) {
     // debugging only 
     // console.log("start: " + selectedStart.date.toISOString() + " -> end: " + selectedEnd.date.toISOString());
+
     updateAreaChart(selectedStart.date, selectedEnd.date);
+    updateStackedBarData(selectedStart.date, selectedEnd.date);
   }
+}
+
+function updateCalDataSet() {
+  let data = getDataWithDayResolution();
+  // console.log(data);
+  // console.log("start");
+  cal_dataSet = {};
+  _.each(data, function (d) {
+    var dateSeconds = Math.round(d.date.getTime()) / 1000;
+    cal_dataSet[dateSeconds] = sumAllActiveData(d);
+  });
 }
 
 function sumAllActiveData(data) {
@@ -61,28 +75,6 @@ function sumAllActiveData(data) {
   // console.log("Sum");
   // console.log(sum);
   return sum;
-}
-
-function updateCalDataSet() {
-  let data = getDataWithDayResolution();
-  // console.log(data);
-  // console.log("start");
-  cal_dataSet = {};
-  _.each(data, function (d) {
-    var dateSeconds = Math.round(d.date.getTime()) / 1000;
-    cal_dataSet[dateSeconds] = sumAllActiveData(d);
-  });
-  // for(let i in data){
-  //     let day = {};
-  //     day.date = Math.round(data[i]['date']()/1000);
-  //     day.value = sumAllActiveData(data[i]);
-  //     cal_dataSet.push(day);
-  //     //cal_dataSet += data[i]['date'].valueOf() + ": ";
-  //     //cal_dataSet += sumAllActiveData(data[i]) + "\n";
-  // }
-  //console.log(g_dataset);
-  // var temp = new Date("12/1/2019");
-  // console.log(temp.getTime());
 }
 
 function calendarInit() {
@@ -128,10 +120,11 @@ function drawCalender() {
     //    moment.lang("en");
     //    return moment(date).format("MMMM").toUpperCase();
     //},
+    displayLegend: true,
+    legend: [3000, 7000, 10000, 20000],
     subDomainTextFormat: "%d",
     browsing: true,
     onClick: onDateClicked,
-    legend: [20, 40, 60, 80]
   });
 
 }

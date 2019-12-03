@@ -63,5 +63,6 @@ function pageInit() {
 
   drawAreaChartInit();
   calendarInit();
+  drawStackedBar();
   loadSelectedItems();
 }
