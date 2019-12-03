@@ -64,25 +64,14 @@ function sumAllActiveData(data) {
 }
 
 function updateCalDataSet() {
+  selectedStart = undefined;
+  selectedEnd = undefined;
   let data = getDataWithDayResolution();
-  // console.log(data);
-  // console.log("start");
   cal_dataSet = {};
   _.each(data, function (d) {
     var dateSeconds = Math.round(d.date.getTime()) / 1000;
     cal_dataSet[dateSeconds] = sumAllActiveData(d);
   });
-  // for(let i in data){
-  //     let day = {};
-  //     day.date = Math.round(data[i]['date']()/1000);
-  //     day.value = sumAllActiveData(data[i]);
-  //     cal_dataSet.push(day);
-  //     //cal_dataSet += data[i]['date'].valueOf() + ": ";
-  //     //cal_dataSet += sumAllActiveData(data[i]) + "\n";
-  // }
-  //console.log(g_dataset);
-  // var temp = new Date("12/1/2019");
-  // console.log(temp.getTime());
 }
 
 function calendarInit() {
@@ -92,8 +81,8 @@ function calendarInit() {
     subDomain: "x_day",
     start: new Date(2011, 0, 5),
     data: cal_dataSet,
-    cellSize: 20,
-    cellPadding: 5,
+    cellSize: 15,
+    cellPadding: 2,
     domainGutter: 20,
     range: 10,
     domainDynamicDimension: true,
@@ -103,12 +92,20 @@ function calendarInit() {
 }
 
 function drawCalender() {
+  d3.select('#area-chart').style("visibility", "hidden");
   // reset calendar area
   document.getElementById("cal-heatmap").innerHTML = "";
   cal = new CalHeatMap();
 
   updateCalDataSet();
   var startAndEnd = getStartAndEndDates();
+  if (!startAndEnd) return;
+
+  var max = 0;
+  _.each(_.values(cal_dataSet), v => {
+    if (v > max) max = v;
+  });
+
   var diffTime = Math.abs(startAndEnd.start - startAndEnd.end);
   var diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30)); 
   cal.init({
@@ -117,8 +114,8 @@ function drawCalender() {
     subDomain: "x_day",
     start: startAndEnd.start,
     data: cal_dataSet,
-    cellSize: 20,
-    cellPadding: 5,
+    cellSize: 15,
+    cellPadding: 2,
     domainGutter: 20,
     range: diffMonths,
     domainDynamicDimension: true,
@@ -131,7 +128,6 @@ function drawCalender() {
     subDomainTextFormat: "%d",
     browsing: true,
     onClick: onDateClicked,
-    legend: [20, 40, 60, 80]
+    legend: [100, max * 0.25, max * 0.50, max * 0.75],
   });
-
 }

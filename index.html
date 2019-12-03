@@ -41,15 +41,26 @@
         </div>
         <div id="area-chart">
             <h2>Power Usage Overview</h2>
-            <svg id="areaChartSvg"></svg>
+            <div>
+                <select onchange="resChange()" id="time-res">
+                    <label>Time resolution</label>
+                    <option value="hour">Hour</option>
+                    <!-- <option value="minute">Minute</option> -->
+                    <option value="second">Second</option>
+                </select>
+            </div>
+            <div>
+                <svg id="areaChartSvg"></svg>
+            </div>
         </div>
-        <div id="stacked-bar">
+        <!-- commented this out only temporary until it is implemented -->
+        <!-- <div id="stacked-bar">
             <svg id="stackedBarSvg">
                 <g>
                     <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
                 </g>
             </svg>
-        </div>
+        </div> -->
     </div>
 
     <!--This must be below all content as the button is not clickable otherwise-->
@@ -58,14 +69,11 @@
     </div>
 
     <div class="topnav">
-        <a class="active" href="#home">Top</a>
-        <a href="#1">Vis 1</a>
+        <a class="active" href="#home">Energy Awareness</a>
+        <!-- <a href="#1">Vis 1</a>
         <a href="#2">Vis 2</a>
-        <a href="#3">Vis 3</a>
+        <a href="#3">Vis 3</a> -->
     </div>
 
-
-
 </body>
-
 </html>

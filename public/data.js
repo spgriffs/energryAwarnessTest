@@ -13,6 +13,8 @@ let fileDataSet = {};
 // [ {date: Alarmclock:, CoffeeMaker: ... key3: , key4 ...} ]
 let g_dataset = [];
 
+// const allKeys = _.map(g_itemList, item => {return item.filename});
+
 let areaChartId = "area-chart";
 
 Date.prototype.addHours = function(h){
@@ -20,13 +22,26 @@ Date.prototype.addHours = function(h){
   return this;
 };
 
+Date.prototype.addMinutes = function(m){
+  this.setMinutes(this.getMinutes()+m);
+  return this;
+};
+
 function loadSelectedItems() {
   // only load the selected items on close
-  _.each(g_itemList, function (item) {
-    if (item.selected) {
-      readInDataItem(item.filename, onUpdate); //, areaChartId);
-    }
+  var anySelected = false;
+  _.each(getSelectedKeys(), function (key) {
+      anySelected = true;
+      readInDataItem(key, onUpdate); //, areaChartId);
   });
+  if (!anySelected) onUpdate();
+}
+
+function getSelectedKeys() {
+  var rslt = _.map(g_itemList, item => {
+    if (item.selected) return item.filename
+  });
+  return _.compact(rslt);
 }
 
 function getDateObj(str) {
@@ -50,21 +65,37 @@ function getDateObj(str) {
 }
 
 function getDataWithDayResolution(){
-  let dayKeys = _.keys(g_dataset[0]).slice(1); // all keys besides the date
-  return getDataWithHourResolution(dayKeys, g_dataset, 24);
+  var keys = getSelectedKeys();
+  return getDataWithHourResolution(keys, g_dataset, 24);
 }
 
 // returns the data vales array
 // with hour sum intervals
-function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
+function getDataWithHourResolution(keys, valuesArray, numHours = 1, optStartDate = null, optEndDate = null) {
   if (valuesArray.length === 0) return [];
 
-  var curDate = new Date(valuesArray[0].date.getTime()); // current date
+  var curDate = new Date(valuesArray[0].date.getTime());
+  var curIdx = 0;
+  var stopIdx = valuesArray.length - 1;
+  if (optStartDate && optEndDate) {
+    if (optStartDate > valuesArray[valuesArray.length-1].date) return [];
+    if (optEndDate < valuesArray[0].date) return [];
+    // get start idx
+    while (valuesArray[curIdx].date < optStartDate) {
+      curIdx++;
+    }
+    curDate = new Date(valuesArray[curIdx].date.getTime());
+
+    while (valuesArray[stopIdx].date > optEndDate) {
+      stopIdx--;
+    }
+  }
+
   var hoursResRecords = [];
   curDate.addHours(numHours);
   var sumObj = createNewDatasetRecord("", curDate);
-  _.each(valuesArray, function(secondResRecord) {
-    if (secondResRecord.date > curDate) {
+  for(var i = curIdx; i < stopIdx; i++) {
+    if (valuesArray[i].date > curDate) {
       // update hour record
       hoursResRecords.push(sumObj);
       curDate.addHours(numHours);
@@ -72,19 +103,84 @@ function getDataWithHourResolution(keys, valuesArray, numHours = 1) {
     }
     // otherwise add the record values
     _.each(keys, function(key) {
-      if(_.isNaN(secondResRecord[key])) {
+      if(_.isNaN(valuesArray[i][key])) {
         throw "NaN value discovered!!";
       }
-      sumObj[key] += secondResRecord[key];
-    })
-  });
-
+      sumObj[key] += valuesArray[i][key];
+    });
+  }
   // add the final sum object for the last hour
   hoursResRecords.push(sumObj);
-
-  // console.log("HOURS");
-  // console.log(hoursResRecords);
   return hoursResRecords;
+}
+
+// yes some of this could in its own function to reduce duplicate code
+// but I don't have time
+// function getDataWithMinuteResolution(keys, valuesArray, numMinutes = 1, optStartDate = null, optEndDate = null) {
+//   if (valuesArray.length === 0) return [];
+//   var curDate = new Date(valuesArray[0].date.getTime());
+//   var curIdx = 0;
+//   var stopIdx = valuesArray.length - 1;
+//   if (optStartDate && optEndDate) {
+//     if (optStartDate > valuesArray[valuesArray.length-1].date) return [];
+//     if (optEndDate < valuesArray[0].date) return [];
+//     // get start idx
+//     while (valuesArray[curIdx].date < optStartDate) {
+//       curIdx++;
+//     }
+//     curDate = new Date(valuesArray[curIdx].date.getTime());
+
+//     while (valuesArray[stopIdx].date > optEndDate) {
+//       stopIdx--;
+//     }
+//   }
+
+//   var minRecord = [];
+//   curDate.addMinutes(numMinutes);
+//   var sumObj = createNewDatasetRecord("", curDate);
+//   for(var i = curIdx; i < stopIdx; i++) {
+//     if (valuesArray[i].date > curDate) {
+//       // update hour record
+//       minRecord.push(sumObj);
+//       curDate.addMinutes(numMinutes);
+//       sumObj = createNewDatasetRecord("", curDate);
+//     }
+//     // otherwise add the record values
+//     _.each(keys, function(key) {
+//       if(_.isNaN(valuesArray[i][key])) {
+//         throw "NaN value discovered!!";
+//       }
+//       sumObj[key] += valuesArray[i][key];
+//     });
+//   }
+//   // add the final sum object for the last hour
+//   minRecord.push(sumObj);
+//   return minRecord;
+// }
+
+function getDataWithSecondResolution(valuesArray, optStartDate = null, optEndDate = null) {
+  if (valuesArray.length === 0) return [];
+  var curIdx = 0;
+  var stopIdx = valuesArray.length - 1;
+  if (optStartDate && optEndDate) {
+    if (optStartDate > valuesArray[valuesArray.length-1].date) return [];
+    if (optEndDate < valuesArray[0].date) return [];
+    // get start idx
+    while (valuesArray[curIdx].date < optStartDate) {
+      curIdx++;
+    }
+
+    while (valuesArray[stopIdx].date > optEndDate) {
+      stopIdx--;
+    }
+  }
+  // no need to sum the objects 
+  // seconds is our highest resolution
+  var rslt = [];
+  for (var i = curIdx; i < stopIdx; i++){
+    rslt.push(valuesArray[i]);
+  }
+  return rslt;
 }
 
 function getStartAndEndDates() {
@@ -92,17 +188,14 @@ function getStartAndEndDates() {
   var endDate = new Date();
   // get the date of the first and last selected item
   // that has value
-  // if (g_dataset.length > 0) {
-  //  startDate = g_dataset[0].date;
-  //  endDate = g_dataset[g_dataset.length -1].date;
-  // }
 
   // all keys are the same for each record
-  var keys = _.keys(g_dataset[0]).splice(1); // all keys except the date key
+  var keys = getSelectedKeys();
+  if (keys.length === 0) return;
   var findFunction = function (record) {
     var rslt = false;
     _.each(keys, function (key) {
-      if (record[key] > 0 && isItemSelected(key)) {
+      if (record[key] > 0) {
         rslt = true;
       }
     });
@@ -113,10 +206,14 @@ function getStartAndEndDates() {
   var foundStartRec = _.find(g_dataset, findFunction);
   if (foundStartRec) startDate = foundStartRec.date;
   // end date search
-  var foundEndRec =  _.find(_.reverse(g_dataset), findFunction);
+  var foundEndRec;  
+  for (var i = g_dataset.length-1; i > -1; i--) {
+    if (findFunction(g_dataset[i])) {
+      foundEndRec = g_dataset[i];
+      break;
+    }
+  } 
   if (foundEndRec) endDate = foundEndRec.date;
-  // return the dataset to correct order
-  _.reverse(g_dataset);
   return {
     start: startDate,
     end: endDate,
@@ -125,7 +222,10 @@ function getStartAndEndDates() {
 
 function readInDataItem(itemName, onNewDataCallback, optElementId = undefined){
   // if (optElementId) startSpinner(optElementId);
-  if (getItemLoadStatus(itemName) > 0) return;
+  if (getItemLoadStatus(itemName) > 0){
+    onNewDataCallback(itemName);
+    return;
+  } 
   setItemLoadStatus(itemName, 1); // loading
   d3.csv(`compressedData/${itemName}.csv`).then(function (fileData){
     _.each(fileData, function(row) {
