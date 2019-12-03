@@ -12,6 +12,11 @@ let yChartAxis;
 let chartSvg;
 let chartLayers;
 
+let areaDateStart = undefined;
+let areaDateEnd = undefined;
+
+let timeRes = "hour";
+
 var xChartScale = d3.scaleTime()
     .domain([new Date, new Date])
     .nice(d3.timeWeek)
@@ -31,9 +36,6 @@ var area = d3.area()
 var chartColorScale = d3.scaleOrdinal()
 .domain(_.map(g_itemList, "filename"))
 .range(_.concat(d3.schemeTableau10, d3.schemeCategory10));
-// .range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf'])
-// ;
-
 
 function drawAreaChartInit() {
   d3.select('#area-chart').style("visibility", "hidden");
@@ -59,42 +61,62 @@ function drawAreaChartInit() {
   .call(d3.axisLeft(yChartScale));
 }
 
-function rescaleXAxis(startDate, endDate) {
-  // var dateSpan = getStartAndEndDates();
-  xChartScale = d3.scaleTime()
-    .domain([startDate, endDate])
-    .nice(d3.timeWeek)
-    .range([0, chartWidth]);
-  xChartAxis.transition().duration(1000).call(d3.axisBottom(xChartScale));
+function resChange() {
+  timeRes = document.getElementById("time-res").value;
+  updateAreaChart(areaDateStart, areaDateEnd);
 }
 
-// function rescaleYAxis(series) { // may not need this
-//   yChartScale = d3.scaleLinear()
-//     .domain([0, d3.max(series, d => d3.max(d, d => d[1]))]).nice()
-//     .range([chartHeight - chartMargin.bottom, chartMargin.top])
-//     ;
+function rescaleXAxis(startDate, endDate) {
+  var tickFormat;
+  if (timeRes === "hour") {
+    tickFormat = d3.timeHour;
+  } else if (timeRes === "minute") { 
+    tickFormat = d3.timeMinute;
+  } else {
+    tickFormat = d3.timeSecond;
+  }
+  
+  xChartScale = d3.scaleTime()
+    .domain([startDate, endDate])
+    .nice(tickFormat)
+    .range([0, chartWidth]);
+    xChartAxis.transition().duration(1000).call(d3.axisBottom(xChartScale));
+}
 
-//   yChartAxis.attr("transform", `translate(${chartMargin.left},0)`)
-//   .call(d3.axisLeft(yChartScale))
-//   .call(g => g.select(".domain").remove())
-//   .call(g => g.select(".tick:last-of-type text").clone()
-//       .attr("x", 3)
-//       .attr("text-anchor", "start")
-//       .attr("font-weight", "bold")
-//       .text(data.y))
-//       ;
-// }
+function rescaleYAxis(values) {
+  var max = 0;
+  var keys = getSelectedKeys();
+  _.each(values, v => {
+    _.each(keys, key => {
+      if (v[key] > max) max = v[key];
+    });
+  });
+
+  yChartScale = d3.scaleLinear()
+    .domain([0, max])
+    .range([chartHeight, 0]);
+  yChartAxis.transition().duration(1000).call(d3.axisLeft(yChartScale));
+}
 
 function updateAreaChart(startDate, endDate) {
+  areaDateStart = startDate;
+  areaDateEnd = endDate;
   // show the area chart
   d3.select('#area-chart').style("visibility", "unset");
   
   // rescale the chart to the new dates
   rescaleXAxis(startDate, endDate);
-  // TODO performance: only select the date between the start and end dates
-  var keys = _.keys(g_dataset[0]).slice(1); // all keys besides the date
-  var hourResValues = getDataWithHourResolution(keys, g_dataset, 1);
-  var series = d3.stack().keys(keys)(hourResValues);
+  var keys = getSelectedKeys(); // we only care about the selected keys
+  var timeResValues;
+  if (timeRes === "hour") {
+    timeResValues = getDataWithHourResolution(keys, g_dataset, 1, startDate, endDate);
+  } else if (timeRes === "minute") {
+    timeResValues = getDataWithMinuteResolution(keys, g_dataset, 1, startDate, endDate);
+  } else {
+    timeResValues = getDataWithSecondResolution(g_dataset, startDate, endDate);
+  }
+  rescaleYAxis(timeResValues);
+  var series = d3.stack().keys(keys)(timeResValues);
   chartLayers.selectAll("path")
     .data(series)
     .join("path")
@@ -103,12 +125,3 @@ function updateAreaChart(startDate, endDate) {
     .append("title")
       .text(({key}) => key);
 }
-
-// function onDataUnselected(itemName) {
-//   console.log(itemName + " has been unselected");
-//   // TODO update the vis by removing all unselected data
-
-//   // rescale the chart to the new dates
-//   rescaleXAxis();
-
-// }

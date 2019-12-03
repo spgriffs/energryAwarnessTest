@@ -77,6 +77,17 @@ function sumAllActiveData(data) {
   return sum;
 }
 
+function updateCalDataSet() {
+  selectedStart = undefined;
+  selectedEnd = undefined;
+  let data = getDataWithDayResolution();
+  cal_dataSet = {};
+  _.each(data, function (d) {
+    var dateSeconds = Math.round(d.date.getTime()) / 1000;
+    cal_dataSet[dateSeconds] = sumAllActiveData(d);
+  });
+}
+
 function calendarInit() {
   cal.init({
     itemSelector: "#cal-heatmap",
@@ -84,8 +95,8 @@ function calendarInit() {
     subDomain: "x_day",
     start: new Date(2011, 0, 5),
     data: cal_dataSet,
-    cellSize: 20,
-    cellPadding: 5,
+    cellSize: 15,
+    cellPadding: 2,
     domainGutter: 20,
     range: 10,
     domainDynamicDimension: true,
@@ -95,12 +106,20 @@ function calendarInit() {
 }
 
 function drawCalender() {
+  d3.select('#area-chart').style("visibility", "hidden");
   // reset calendar area
   document.getElementById("cal-heatmap").innerHTML = "";
   cal = new CalHeatMap();
 
   updateCalDataSet();
   var startAndEnd = getStartAndEndDates();
+  if (!startAndEnd) return;
+
+  var max = 0;
+  _.each(_.values(cal_dataSet), v => {
+    if (v > max) max = v;
+  });
+
   var diffTime = Math.abs(startAndEnd.start - startAndEnd.end);
   var diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30)); 
   cal.init({
@@ -109,8 +128,8 @@ function drawCalender() {
     subDomain: "x_day",
     start: startAndEnd.start,
     data: cal_dataSet,
-    cellSize: 20,
-    cellPadding: 5,
+    cellSize: 15,
+    cellPadding: 2,
     domainGutter: 20,
     range: diffMonths,
     domainDynamicDimension: true,
@@ -121,10 +140,9 @@ function drawCalender() {
     //    return moment(date).format("MMMM").toUpperCase();
     //},
     displayLegend: true,
-    legend: [3000, 7000, 10000, 20000],
     subDomainTextFormat: "%d",
     browsing: true,
     onClick: onDateClicked,
+    legend: [100, max * 0.25, max * 0.50, max * 0.75]
   });
-
 }

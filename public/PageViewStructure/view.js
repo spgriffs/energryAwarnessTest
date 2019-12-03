@@ -16,7 +16,6 @@ function isItemSelected(filename) {
 
 function onUpdate() {
   // when new data is selected
-  // updateAreaChart();
   drawCalender();
 }
 
@@ -63,6 +62,7 @@ function pageInit() {
 
   drawAreaChartInit();
   calendarInit();
-  drawStackedBar();
-  loadSelectedItems();
+  var selectedKeys = getSelectedKeys();
+  if (selectedKeys && selectedKeys.length > 0)
+    loadSelectedItems();
 }
